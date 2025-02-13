@@ -199,7 +199,7 @@ export const HomeClient = () => {
                   <div className="flex flex-col gap-2 items-center justify-center w-full">
                     <div className="flex gap-4 items-center justify-between w-full">
                       <p className="w-40 text-end hidden md:block">
-                        Sangat Setuju
+                        Sangat Tidak Setuju
                       </p>
                       {Array.from({ length: 5 }, (_, i) => (
                         <Button
@@ -265,12 +265,12 @@ export const HomeClient = () => {
                         </Button>
                       ))}
                       <p className="w-40 text-start hidden md:block">
-                        Sangat Tidak Setuju
+                        Sangat Setuju
                       </p>
                     </div>
                     <div className="w-full flex justify-between text-xs dark:text-gray-300 md:hidden">
-                      <p>Sangat Setuju</p>
                       <p>Sangat Tidak Setuju</p>
+                      <p>Sangat Setuju</p>
                     </div>
                   </div>
                 </motion.div>
