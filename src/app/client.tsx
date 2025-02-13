@@ -104,7 +104,7 @@ export const HomeClient = () => {
             <div className="flex items-center justify-center gap-4 w-full flex-col md:flex-row">
               <MagicCard
                 className="dark:bg-gray-900 bg-gray-50 flex items-center justify-center gap-4 px-3 h-10 lg:h-12 rounded col-span-1 w-[323px] lg:w-full max-w-sm"
-                gradientColor={theme === "dark" ? "#374151" : "#e5e7eb"}
+                gradientColor={theme === "dark" ? "#1f2937" : "#e5e7eb"}
               >
                 <WordRotate
                   className="flex items-center justify-start gap-4  w-full"
