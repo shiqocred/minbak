@@ -31,7 +31,7 @@ export const HomeClient = () => {
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
   const [responseAi, setResponseAi] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const isPaid = false;
+  const [isPaid, setIsPaid] = useState(false);
 
   const [soalAcak, setSoalAcak] = useState<{ soal: string; jawaban: number }[]>(
     getSoalAcak()
@@ -304,7 +304,7 @@ export const HomeClient = () => {
                   <p className="font-semibold text-center">
                     Dapatkan hasilnya dengan membayar Rp. 10.000
                   </p>
-                  <Button>
+                  <Button onClick={() => setIsPaid(true)}>
                     <LockOpenIcon />
                     Dapatkan Akses
                   </Button>
