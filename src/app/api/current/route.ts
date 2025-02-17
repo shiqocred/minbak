@@ -51,7 +51,7 @@ export const GET = async () => {
 
   if (!userDoc.source) {
     return Response.json({
-      message: "User Created",
+      message: "Welcome again.",
       isPaid: false,
       status: true,
       source: false,
@@ -61,7 +61,7 @@ export const GET = async () => {
 
   if (!userDoc.isPaid) {
     return Response.json({
-      message: "User Created",
+      message: "Welcome again.",
       isPaid: false,
       status: true,
       source: true,
@@ -103,7 +103,7 @@ export const GET = async () => {
     );
 
     return Response.json({
-      message: "User Created",
+      message: "Welcome again.",
       isPaid: updatedDoc.isPaid,
       status: true,
       source: true,
@@ -112,7 +112,7 @@ export const GET = async () => {
   }
 
   return Response.json({
-    message: "User Created",
+    message: "Welcome again",
     isPaid: userDoc.isPaid,
     status: true,
     source: true,

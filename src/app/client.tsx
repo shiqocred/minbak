@@ -18,6 +18,8 @@ import {
   Brain,
   ChevronLeft,
   ChevronRight,
+  CreditCardIcon,
+  Loader,
   LockOpenIcon,
   Rocket,
   Sparkles,
@@ -26,21 +28,29 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
+  const router = useRouter();
 
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
+  const [isPaymentProcess, setIsPaymentProcess] = useState(false);
 
-  const [directSoal, setDirectSoal] = useState(0);
   const [posSoal, setPosSoal] = useState(0);
+  const [directSoal, setDirectSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
+  const [status, setStatus] = useQueryState("status", { defaultValue: "" });
+
+  const [emailCustomer, setEmailCustomer] = useState("");
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
 
@@ -97,8 +107,10 @@ export const HomeClient = () => {
       setPage("result");
     }
   };
-  const mutatePay = async () => {
-    setIsLoading(true);
+
+  const mutatePay = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsPaymentProcess(true);
     try {
       const msg = await fetch("/api/pay", {
         method: "POST",
@@ -106,6 +118,7 @@ export const HomeClient = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ email: emailCustomer }),
       });
 
       if (!msg.ok) {
@@ -114,12 +127,14 @@ export const HomeClient = () => {
 
       const data = await msg.json();
 
-      return data;
+      setEmailCustomer("");
+      router.push(data);
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
     } finally {
-      setIsLoading(false);
+      setIsPaymentProcess(false);
+      setIsPayment(false);
     }
   };
 
@@ -130,6 +145,13 @@ export const HomeClient = () => {
       )
     );
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStatus("");
+    }, 10000);
+    getCurrent();
+  }, [status]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -381,18 +403,60 @@ export const HomeClient = () => {
                 </ReactMarkdown>
               </ScrollArea>
               <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
-                <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                  <p className="font-semibold text-center">
-                    Dapatkan hasilnya dengan membayar Rp. 10.000
-                  </p>
-                  <Button
-                    className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
-                    onClick={() => mutatePay()}
-                  >
-                    <LockOpenIcon />
-                    Dapatkan Akses
-                  </Button>
-                </div>
+                {!isPayment ? (
+                  <div className="w-full max-w-sm h-[168px] p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                    <p className="font-semibold text-center">
+                      Dapatkan hasilnya dengan membayar Rp. 10.000
+                    </p>
+                    <Button
+                      className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
+                      onClick={() => setIsPayment(true)}
+                    >
+                      <LockOpenIcon />
+                      Dapatkan Akses
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="w-full max-w-sm overflow-hidden h-[168px] relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                    <form
+                      onSubmit={mutatePay}
+                      className="flex items-center justify-center flex-col gap-4 w-full"
+                    >
+                      <p className="font-semibold text-center">Masukan Email</p>
+                      <Input
+                        type="email"
+                        placeholder="example@mail.com"
+                        className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                        value={emailCustomer}
+                        onChange={(e) => setEmailCustomer(e.target.value)}
+                      />
+                      <div className="flex w-full items-center gap-2">
+                        <Button
+                          className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
+                          type="button"
+                          variant={"outline"}
+                          onClick={() => setIsPayment(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
+                          type="submit"
+                          disabled={!emailCustomer}
+                        >
+                          <CreditCardIcon />
+                          Lanjutkan Pembayaran
+                        </Button>
+                      </div>
+                    </form>
+                    {isPaymentProcess && (
+                      <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
+                        <Loader className="size-4 animate-spin" />
+                        Sedang di proses
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
