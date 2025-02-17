@@ -1,14 +1,12 @@
 import { DATABASE_ID, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
-export const POST = async (
-  req: Request,
-  { searchParams }: { searchParams: Promise<{ resultCode: string }> }
-) => {
+export const POST = async (req: NextRequest) => {
   try {
     const { databases } = await createSessionClient();
-    const { resultCode } = await searchParams;
+    const resultCode = req.nextUrl.searchParams.get("resultCode");
 
     const cookie = await cookies();
     const sessionId = cookie.get("MBTI_SESSION");
