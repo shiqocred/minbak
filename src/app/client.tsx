@@ -6,8 +6,15 @@ import { WordRotate } from "@/components/magicui/word-rotate";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn, getSoalAcak, responseExample } from "@/lib/utils";
 import {
+  cn,
+  getSoalAcak,
+  responseExample,
+  ConvertedData,
+  transformData,
+} from "@/lib/utils";
+import {
+  ArrowRight,
   Brain,
   ChevronLeft,
   ChevronRight,
@@ -15,6 +22,7 @@ import {
   Rocket,
   Sparkles,
   UserCheck2,
+  XCircle,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
@@ -25,28 +33,28 @@ import { toast } from "sonner";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
+
+  const [isPaid, setIsPaid] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [directSoal, setDirectSoal] = useState(0);
   const [posSoal, setPosSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
   const [responseAi, setResponseAi] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isPaid, setIsPaid] = useState(false);
 
-  const [soalAcak, setSoalAcak] = useState<{ soal: string; jawaban: number }[]>(
-    getSoalAcak()
-  );
+  const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
 
-  const getResponse = async () => {
+  const getCurrent = async () => {
     setIsLoading(true);
     try {
-      const msg = await fetch("/api/output", {
-        method: "POST",
+      const msg = await fetch("/api/current", {
+        method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ soal: soalAcak }),
       });
 
       if (!msg.ok) {
@@ -54,12 +62,65 @@ export const HomeClient = () => {
       }
 
       const data = await msg.json();
-      setResponseAi(data);
+      return data;
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getResponse = async () => {
+    setIsLoading(true);
+    const body = transformData(soalAcak);
+    try {
+      const msg = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ soal: body }),
+      });
+
+      if (!msg.ok) {
+        throw new Error("Failed to fetch");
+      }
+
+      const data = await msg.json();
+
+      return data;
+    } catch (error) {
+      console.log("error", error);
+      toast.error("Failed to fetch");
+    } finally {
+      setIsLoading(false);
       setPage("result");
+    }
+  };
+  const mutatePay = async () => {
+    setIsLoading(true);
+    try {
+      const msg = await fetch("/api/pay", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!msg.ok) {
+        throw new Error("Failed to fetch");
+      }
+
+      const data = await msg.json();
+
+      return data;
+    } catch (error) {
+      console.log("error", error);
+      toast.error("Failed to fetch");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -74,6 +135,7 @@ export const HomeClient = () => {
 
   useEffect(() => {
     setIsMounted(true);
+    getCurrent();
   }, []);
 
   if (!isMounted) {
@@ -194,7 +256,7 @@ export const HomeClient = () => {
                   className="flex flex-col items-center justify-between h-[280px] w-full max-w-3xl"
                 >
                   <p className="text-xl tracking-wide text-center leading-relaxed font-medium">
-                    {soalAcak[posSoal].soal}
+                    {soalAcak[posSoal].question}
                   </p>
                   <div className="flex flex-col gap-2 items-center justify-center w-full">
                     <div className="flex gap-4 items-center justify-between w-full">
@@ -208,23 +270,23 @@ export const HomeClient = () => {
                             "rounded-full bg-transparent text-gray-900 dark:text-gray-50 border-[1.5px] transition-all hover:text-white cursor-pointer dark:bg-gray-950",
                             i === 2 &&
                               "w-12 aspect-square h-auto border-yellow-500 hover:bg-yellow-500 dark:hover:text-gray-950 dark:hover:bg-yellow-500",
-                            soalAcak[posSoal].jawaban - 1 === i &&
+                            soalAcak[posSoal].score - 1 === i &&
                               i === 2 &&
                               "bg-yellow-500 dark:bg-yellow-500 text-white",
                             (i === 1 || i === 3) &&
                               "w-14 aspect-square h-auto ",
                             (i === 0 || i === 4) &&
                               "w-16 aspect-square h-auto text-lg",
-                            soalAcak[posSoal].jawaban - 1 === i &&
+                            soalAcak[posSoal].score - 1 === i &&
                               i === 0 &&
                               " bg-red-500 dark:bg-red-500 text-white",
-                            soalAcak[posSoal].jawaban - 1 === i &&
+                            soalAcak[posSoal].score - 1 === i &&
                               i === 1 &&
                               " bg-amber-500 dark:bg-amber-500 text-white",
-                            soalAcak[posSoal].jawaban - 1 === i &&
+                            soalAcak[posSoal].score - 1 === i &&
                               i === 3 &&
                               "bg-lime-500 dark:bg-lime-500 text-white",
-                            soalAcak[posSoal].jawaban - 1 === i &&
+                            soalAcak[posSoal].score - 1 === i &&
                               i === 4 &&
                               "bg-green-500 dark:border-green-500 text-white",
                             i === 0 &&
@@ -254,10 +316,7 @@ export const HomeClient = () => {
                             ) {
                               setPosSoal((prev) => prev + 1);
                             } else if (directSoal === soalAcak.length - 1) {
-                              getResponse();
-                              setSoalAcak(getSoalAcak());
-                              setDirectSoal(0);
-                              setPosSoal(0);
+                              setConfirm(true);
                             }
                           }}
                         >
@@ -275,6 +334,30 @@ export const HomeClient = () => {
                   </div>
                 </motion.div>
               </AnimatePresence>
+              {confirm && (
+                <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center justify-center gap-2 backdrop-blur-sm bg-white/15 dark:bg-black/15">
+                  <Button
+                    onClick={() => setConfirm(false)}
+                    className=" cursor-pointer"
+                  >
+                    <XCircle />
+                    Kembali
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      getResponse();
+                      setSoalAcak(getSoalAcak());
+                      setDirectSoal(0);
+                      setPosSoal(0);
+                      setConfirm(false);
+                    }}
+                    className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-400 hover:dark:bg-yellow-500 cursor-pointer"
+                  >
+                    Lihat Jawaban
+                    <ArrowRight />
+                  </Button>
+                </div>
+              )}
               {isLoading && (
                 <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center justify-center gap-2 backdrop-blur-sm bg-white/15 dark:bg-black/15">
                   <Sparkles className="size-5 animate-pulse" />
@@ -301,13 +384,18 @@ export const HomeClient = () => {
               </ScrollArea>
               {!isPaid && (
                 <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
-                  <p className="font-semibold text-center">
-                    Dapatkan hasilnya dengan membayar Rp. 10.000
-                  </p>
-                  <Button onClick={() => setIsPaid(true)}>
-                    <LockOpenIcon />
-                    Dapatkan Akses
-                  </Button>
+                  <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                    <p className="font-semibold text-center">
+                      Dapatkan hasilnya dengan membayar Rp. 10.000
+                    </p>
+                    <Button
+                      className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
+                      onClick={() => mutatePay()}
+                    >
+                      <LockOpenIcon />
+                      Dapatkan Akses
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>

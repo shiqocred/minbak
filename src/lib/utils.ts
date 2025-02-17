@@ -6,30 +6,110 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const soalKepribadian = [
-  "Saya suka berada di tempat ramai bersama banyak orang. ",
-  "Saya suka merencanakan hari saya dari awal dan mengikuti jadwal.",
-  "Saya suka mencari ide-ide baru dan berpikir kreatif.",
-  "Saat menghadapi masalah, saya lebih menggunakan logika daripada perasaan.",
-  "Saya memperhatikan hal-hal kecil saat mengerjakan sesuatu.",
-  "Saya biasanya memimpin saat berada dalam kelompok.",
-  "Saya tetap tenang meskipun dalam situasi sulit.",
-  "Saya merasa senang ketika bisa membantu orang lain atau membuat hidup mereka lebih mudah.",
-  "Saya nyaman jika segala sesuatunya teratur dan bisa diprediksi.",
-  "Saya tidak takut mengambil risiko jika itu bisa membantu saya mencapai sesuatu yang penting.",
-  "Saya mudah memahami perasaan orang lain.",
-  "Saya cepat menyesuaikan diri jika ada perubahan rencana atau situasi tak terduga.",
-  "Saya suka menganalisis data atau memecahkan masalah yang rumit.",
-  "Saya merasa berenergi setelah menghabiskan waktu sendirian atau di tempat yang tenang.",
-  "Saya cenderung melihat sisi positif dari situasi, meskipun ada masalah.",
+  {
+    question: "Saya tetap tenang meskipun dalam situasi sulit",
+    role: "emotional_stability",
+  },
+  {
+    question: "Saya memperhatikan hal-hal kecil saat mengerjakan sesuatu",
+    role: "attention_to_detail",
+  },
+  {
+    question:
+      "Saya cenderung melihat sisi positif dari situasi, meskipun ada masalah",
+    role: "optimism",
+  },
+  {
+    question:
+      "Saya cepat menyesuaikan diri jika ada perubahan rencana atau situasi tak terduga",
+    role: "adaptability",
+  },
+  {
+    question: "Saya nyaman jika segala sesuatunya teratur dan bisa diprediksi",
+    role: "structure_preference",
+  },
+  {
+    question: "Saya suka berada di tempat ramai bersama banyak orang",
+    role: "social_orientation",
+  },
+  {
+    question:
+      "Saya merasa senang ketika bisa membantu orang lain atau membuat hidup mereka lebih mudah",
+    role: "altruism",
+  },
+  {
+    question: "Saya suka menganalisis data atau memecahkan masalah yang rumit",
+    role: "analytical_thinking",
+  },
+  {
+    question: "Saya suka merencanakan hari saya dari awal dan mengikuti jadwal",
+    role: "planning",
+  },
+  {
+    question:
+      "Saat menghadapi masalah, saya lebih menggunakan logika daripada perasaan",
+    role: "decision_making",
+  },
+  {
+    question:
+      "Saya tidak takut mengambil risiko jika itu bisa membantu saya mencapai sesuatu yang penting",
+    role: "risk_taking",
+  },
+  {
+    question: "Saya biasanya memimpin saat berada dalam kelompok",
+    role: "leadership",
+  },
+  { question: "Saya mudah memahami perasaan orang lain", role: "empathy" },
+  {
+    question: "Saya suka mencari ide-ide baru dan berpikir kreatif",
+    role: "creativity",
+  },
+  {
+    question:
+      "Saya merasa berenergi setelah menghabiskan waktu sendirian atau di tempat yang tenang",
+    role: "introversion_recharge",
+  },
 ];
 
-export const getSoalAcak = () => {
-  return soalKepribadian
-    .map((soal) => ({
-      soal,
-      jawaban: 0, // Default jawaban
-    }))
-    .sort(() => Math.random() - 0.5);
+export type ConvertedData = {
+  question: string;
+  role: string;
+  score: number;
+};
+
+const shuffleArray = <T>(array: T[]): T[] => {
+  return array.sort(() => Math.random() - 0.5);
+};
+
+export const getSoalAcak = (): ConvertedData[] => {
+  const shuffledData = shuffleArray(soalKepribadian);
+  return shuffledData.map((item) => ({
+    ...item,
+    score: 0,
+  }));
+};
+
+type QuestionData = {
+  question: string;
+  role: string;
+  score: number;
+};
+
+type TransformedData = {
+  [key: string]: {
+    question: string;
+    score: number;
+  };
+};
+
+export const transformData = (data: QuestionData[]): TransformedData => {
+  return data.reduce((acc, item) => {
+    acc[item.role] = {
+      question: item.question,
+      score: item.score,
+    };
+    return acc;
+  }, {} as TransformedData);
 };
 
 export const responseExample = `Baik! Berikut versi yang benar-benar acak dengan huruf yang disisipkan atau dihapus secara acak:  
