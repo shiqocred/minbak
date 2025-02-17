@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
 import { ID } from "node-appwrite";
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   const cookie = await cookies();
 
   const { databases } = await createSessionClient();

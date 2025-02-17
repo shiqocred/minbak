@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export const POST = async (req: Request) => {
+export const POST = async () => {
   const MERCHANT_CODE = process.env.NEXT_PUBLIC_DUITKU_MERCHANT_CODE!;
   const API_KEY = process.env.NEXT_PUBLIC_DUITKU_API_KEY!;
   const PAYMENT_URL =

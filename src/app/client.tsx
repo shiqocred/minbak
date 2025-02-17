@@ -34,7 +34,6 @@ import { toast } from "sonner";
 export const HomeClient = () => {
   const { theme } = useTheme();
 
-  const [isPaid, setIsPaid] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +41,6 @@ export const HomeClient = () => {
   const [directSoal, setDirectSoal] = useState(0);
   const [posSoal, setPosSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
-  const [responseAi, setResponseAi] = useState("");
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
 
@@ -379,25 +377,23 @@ export const HomeClient = () => {
             <div className="py-10 md:py-12 lg:py-0 h-full w-full relative">
               <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
                 <ReactMarkdown className={"w-full max-w-3xl mx-auto"}>
-                  {isPaid ? responseAi : responseExample}
+                  {responseExample}
                 </ReactMarkdown>
               </ScrollArea>
-              {!isPaid && (
-                <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
-                  <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                    <p className="font-semibold text-center">
-                      Dapatkan hasilnya dengan membayar Rp. 10.000
-                    </p>
-                    <Button
-                      className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
-                      onClick={() => mutatePay()}
-                    >
-                      <LockOpenIcon />
-                      Dapatkan Akses
-                    </Button>
-                  </div>
+              <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
+                <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                  <p className="font-semibold text-center">
+                    Dapatkan hasilnya dengan membayar Rp. 10.000
+                  </p>
+                  <Button
+                    className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
+                    onClick={() => mutatePay()}
+                  >
+                    <LockOpenIcon />
+                    Dapatkan Akses
+                  </Button>
                 </div>
-              )}
+              </div>
             </div>
           </motion.div>
         )}
