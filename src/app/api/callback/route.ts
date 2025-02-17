@@ -1,29 +1,23 @@
 import { DATABASE_ID, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
-import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
+import { Query } from "node-appwrite";
 
 export const POST = async (req: NextRequest) => {
   try {
     const { databases } = await createSessionClient();
     const resultCode = req.nextUrl.searchParams.get("resultCode");
+    const reference = req.nextUrl.searchParams.get("reference");
 
-    const cookie = await cookies();
-    const sessionId = cookie.get("MBTI_SESSION");
-
-    if (!sessionId?.value) {
-      return new Response("Data not found", { status: 404 });
+    if (!resultCode || !reference) {
+      return new Response("Missing data required", { status: 400 });
     }
 
-    console.log(resultCode);
+    const existingDoc = await databases.listDocuments(DATABASE_ID, UTAMA_ID, [
+      Query.equal("reference", reference),
+    ]);
 
-    const existingDoc = await databases.getDocument(
-      DATABASE_ID,
-      UTAMA_ID,
-      sessionId.value
-    );
-
-    if (!existingDoc) {
+    if (existingDoc.total === 0) {
       return new Response("Data not found", { status: 404 });
     }
 
@@ -31,9 +25,14 @@ export const POST = async (req: NextRequest) => {
       return new Response("Payment failed", { status: 400 });
     }
 
-    await databases.updateDocument(DATABASE_ID, UTAMA_ID, sessionId.value, {
-      isPaid: true,
-    });
+    await databases.updateDocument(
+      DATABASE_ID,
+      UTAMA_ID,
+      existingDoc.documents[0].$id,
+      {
+        isPaid: true,
+      }
+    );
 
     return Response.json({ success: true });
   } catch (error) {

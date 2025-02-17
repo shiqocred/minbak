@@ -1,9 +1,18 @@
-import { API_KEY, baseUrl, MERCHANT_CODE, PAYMENT_URL } from "@/config";
+import {
+  API_KEY,
+  baseUrl,
+  DATABASE_ID,
+  MERCHANT_CODE,
+  PAYMENT_URL,
+  UTAMA_ID,
+} from "@/config";
+import { createSessionClient } from "@/lib/appwrite";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 
 export const POST = async (req: Request) => {
   try {
+    const { databases } = await createSessionClient();
     const { email } = await req.json();
 
     const cookie = await cookies();
@@ -22,15 +31,9 @@ export const POST = async (req: Request) => {
       .update(signatureString)
       .digest("hex");
 
-    const orderIdString = `${sessionId}${timestamp}`;
-    const orderId = crypto
-      .createHash("md5")
-      .update(orderIdString)
-      .digest("hex");
-
     const payload = {
       paymentAmount: 10000,
-      merchantOrderId: orderId,
+      merchantOrderId: `${sessionId}-${timestamp}`,
       productDetails: "Payment for result test",
       additionalParam: "",
       merchantUserInfo: "",
@@ -60,6 +63,10 @@ export const POST = async (req: Request) => {
     }
 
     const data = await response.json();
+
+    await databases.updateDocument(DATABASE_ID, UTAMA_ID, sessionId, {
+      reference: data.reference,
+    });
 
     return Response.json(data.paymentUrl);
   } catch (error) {
