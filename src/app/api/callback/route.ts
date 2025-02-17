@@ -6,8 +6,10 @@ import { Query } from "node-appwrite";
 export const POST = async (req: NextRequest) => {
   try {
     const { databases } = await createSessionClient();
-    const resultCode = req.nextUrl.searchParams.get("resultCode");
-    const reference = req.nextUrl.searchParams.get("reference");
+    const body = await req.text();
+    const params = new URLSearchParams(body);
+    const resultCode = params.get("resultCode");
+    const reference = params.get("reference");
 
     if (!resultCode || !reference) {
       return new Response("Missing data required", { status: 400 });
