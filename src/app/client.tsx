@@ -151,7 +151,7 @@ export const HomeClient = () => {
       setStatus("");
     }, 10000);
     getCurrent();
-  }, [status]);
+  }, [status, setStatus]);
 
   useEffect(() => {
     setIsMounted(true);

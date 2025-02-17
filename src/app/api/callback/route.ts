@@ -4,9 +4,7 @@ import { cookies } from "next/headers";
 
 export const POST = async (
   req: Request,
-  {
-    searchParams,
-  }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
+  { searchParams }: { searchParams: Promise<{ resultCode: string }> }
 ) => {
   try {
     const { databases } = await createSessionClient();
