@@ -10,7 +10,7 @@ export const POST = async () => {
   const timestamp = Date.now().toString();
 
   // Membuat signature SHA256
-  const signatureString = `${MERCHANT_CODE} - ${timestamp} - ${API_KEY}`;
+  const signatureString = `${MERCHANT_CODE}-${timestamp}-${API_KEY}`;
   const signature = crypto
     .createHash("sha256")
     .update(signatureString)
