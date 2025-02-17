@@ -10,7 +10,6 @@ export const POST = async (req: NextRequest) => {
     const params = new URLSearchParams(body);
     const resultCode = params.get("resultCode");
     const reference = params.get("reference");
-
     if (!resultCode || !reference) {
       return new Response("Missing data required", { status: 400 });
     }
