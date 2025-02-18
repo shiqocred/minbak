@@ -13,7 +13,7 @@ export const POST = async (req: NextRequest) => {
         status: 415, // Unsupported Media Type
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Methods": "POST",
           "Access-Control-Allow-Headers": "Content-Type",
         },
       });
@@ -30,7 +30,7 @@ export const POST = async (req: NextRequest) => {
         status: 400,
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Methods": "POST",
           "Access-Control-Allow-Headers": "Content-Type",
         },
       });
@@ -47,7 +47,7 @@ export const POST = async (req: NextRequest) => {
         status: 404,
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Methods": "POST",
           "Access-Control-Allow-Headers": "Content-Type",
         },
       });
@@ -58,7 +58,7 @@ export const POST = async (req: NextRequest) => {
         status: 400,
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Methods": "POST",
           "Access-Control-Allow-Headers": "Content-Type",
         },
       });
@@ -77,7 +77,7 @@ export const POST = async (req: NextRequest) => {
       status: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Methods": "POST",
         "Access-Control-Allow-Headers": "Content-Type",
         "Content-Type": "application/json",
       },
@@ -88,7 +88,7 @@ export const POST = async (req: NextRequest) => {
       status: 500,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Methods": "POST",
         "Access-Control-Allow-Headers": "Content-Type",
       },
     });
