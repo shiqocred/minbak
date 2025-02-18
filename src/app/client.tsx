@@ -44,6 +44,7 @@ export const HomeClient = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
+  const [isSend, setIsSend] = useState(false);
   const [isPaymentProcess, setIsPaymentProcess] = useState(false);
 
   const [current, setCurrent] = useState<{
@@ -104,7 +105,7 @@ export const HomeClient = () => {
       }
 
       getCurrent();
-      setPage("result");
+      setIsSend(true);
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
@@ -162,7 +163,11 @@ export const HomeClient = () => {
     if (!current?.source && page === "result") {
       setPage("");
     }
-  }, [current, page]);
+    if (current?.source && isSend) {
+      setIsSend(false);
+      setPage("result");
+    }
+  }, [current, page, isSend]);
 
   useEffect(() => {
     setIsMounted(true);
