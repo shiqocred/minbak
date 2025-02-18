@@ -16,7 +16,7 @@ import {
 export const Navbar = ({
   current,
 }: {
-  current: {
+  current?: {
     message: string;
     data: string | null;
     isPaid: boolean;
@@ -78,7 +78,7 @@ export const Navbar = ({
           </Link>
         </Button>
         <div className="items-center justify-center gap-2 hidden lg:flex">
-          {current.source && (
+          {current?.source && (
             <Button asChild variant={"link"}>
               <Link href={"/?page=result"}>Hasil Anda</Link>
             </Button>
@@ -117,7 +117,7 @@ export const Navbar = ({
             <DrawerDescription></DrawerDescription>
           </DrawerHeader>
           <div className="items-center justify-center gap-2 flex flex-col">
-            {current.source && (
+            {current?.source && (
               <Button
                 className="h-10"
                 asChild

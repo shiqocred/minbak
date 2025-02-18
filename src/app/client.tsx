@@ -36,6 +36,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
+import Link from "next/link";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
@@ -230,7 +231,8 @@ export const HomeClient = () => {
 
   if (!current) {
     return (
-      <div className="w-full h-full flex items-center justify-center flex-col gap-3">
+      <div className="w-full h-full flex items-center justify-center flex-col gap-3 pt-8">
+        <Navbar />
         <Loader className="size-7 animate-spin" />
         <p className="animate-pulse">Memuat content</p>
       </div>
@@ -238,7 +240,7 @@ export const HomeClient = () => {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full pt-8">
       <Navbar current={current} />
       <AnimatePresence mode="wait" custom={page}>
         {page === "" && (
@@ -250,6 +252,27 @@ export const HomeClient = () => {
             transition={{ duration: 1 }}
             className="w-full h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 flex items-center justify-center flex-col gap-8"
           >
+            <Button
+              className="flex items-center gap-1 rounded-full h-auto py-1.5 bg-transparent dark:bg-transparent cursor-pointer disabled:opacity-100 disabled:cursor-default "
+              variant={"outline"}
+              disabled={!current.source}
+              onClick={() => router.push("/?page=result")}
+            >
+              {current.source && !current.isPaid && "🌱"}
+              {current.data && "🎉"}
+              {!current.source && "🐣"}
+              <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
+              <span className={cn(`inline animate-gradient dark:text-white`)}>
+                {current.source && !current.isPaid
+                  ? "Cukup Rp. 9000 untuk mengenali dirimu"
+                  : !current.source
+                  ? "Who are you guys?"
+                  : "Lihat Jawaban Anda"}
+              </span>
+              {!!current.source && (
+                <ChevronRight className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+              )}
+            </Button>
             <div className="flex items-center justify-center gap-4 flex-col">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-gray-500 to-gray-900 dark:from-white dark:to-gray-500 bg-clip-text text-transparent text-balance max-w-5xl text-center">
                 Kenali Dirimu, Pahami Potensimu
@@ -432,27 +455,33 @@ export const HomeClient = () => {
                 </motion.div>
               </AnimatePresence>
               {confirm && (
-                <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center justify-center gap-2 backdrop-blur-sm bg-white/15 dark:bg-black/15">
-                  <Button
-                    onClick={() => setConfirm(false)}
-                    className=" cursor-pointer"
-                  >
-                    <XCircle />
-                    Kembali
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      getResponse();
-                      setSoalAcak(getSoalAcak());
-                      setDirectSoal(0);
-                      setPosSoal(0);
-                      setConfirm(false);
-                    }}
-                    className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-400 hover:dark:bg-yellow-500 cursor-pointer text-black"
-                  >
-                    Lihat Jawaban
-                    <ArrowRight />
-                  </Button>
+                <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center justify-center flex-col gap-4 backdrop-blur-sm bg-white/15 dark:bg-black/15">
+                  <p className="w-full max-w-md text-center bg-black/15 backdrop-blur-sm px-5">
+                    Jika ingin melanjutkan, anda akan kehilangan jawaban saat
+                    ini dan melakukan pembayaran ulang
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => setConfirm(false)}
+                      className=" cursor-pointer"
+                    >
+                      <XCircle />
+                      Kembali
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        getResponse();
+                        setSoalAcak(getSoalAcak());
+                        setDirectSoal(0);
+                        setPosSoal(0);
+                        setConfirm(false);
+                      }}
+                      className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-400 hover:dark:bg-yellow-500 cursor-pointer text-black"
+                    >
+                      Lihat Jawaban
+                      <ArrowRight />
+                    </Button>
+                  </div>
                 </div>
               )}
               {isLoading && (
@@ -471,9 +500,9 @@ export const HomeClient = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100vh", opacity: 0 }}
             transition={{ duration: 1 }}
-            className="w-full h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-center flex-col pt-16"
+            className="w-full h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-center flex-col pt-8"
           >
-            <div className="py-10 md:py-12 lg:py-0 h-full w-full relative">
+            <div className="py-2 md:py-5 lg:py-0 h-full w-full relative">
               <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
                 <ReactMarkdown className={"w-full max-w-3xl mx-auto"}>
                   {!current.isPaid || !current.data
