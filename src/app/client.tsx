@@ -28,13 +28,14 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
+import confetti from "canvas-confetti";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
@@ -61,6 +62,10 @@ export const HomeClient = () => {
   const [emailCustomer, setEmailCustomer] = useState("");
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
+
+  const currentMemo = useMemo(() => {
+    return current;
+  }, [current]);
 
   const getCurrent = async () => {
     setIsLoading(true);
@@ -153,17 +158,62 @@ export const HomeClient = () => {
   };
 
   useEffect(() => {
+    if (currentMemo) {
+      if (status === "00") {
+        const duration = 5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = {
+          startVelocity: 30,
+          spread: 360,
+          ticks: 60,
+          zIndex: 0,
+        };
+
+        const randomInRange = (min: number, max: number) =>
+          Math.random() * (max - min) + min;
+
+        const interval = window.setInterval(() => {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 50 * (timeLeft / duration);
+          confetti({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+          });
+          confetti({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+          });
+        }, 250);
+
+        toast.success("Pembayaran Berhasil");
+      }
+
+      if (status === "01") {
+        toast.error("Pembayaran Gagal");
+      }
+
+      if (status === "02") {
+        toast.warning("Pembayaran Dibatalkan");
+      }
+    }
+
     setTimeout(() => {
       setStatus("");
-    }, 10000);
-    getCurrent();
-  }, [status]);
+    }, 3000);
+  }, [currentMemo, status]);
 
   useEffect(() => {
-    if (!current?.source && page === "result") {
+    if (current && !current.source && page === "result") {
       setPage("");
     }
-    if (current?.source && isSend) {
+    if (current && current.source && isSend) {
       setIsSend(false);
       setPage("result");
     }
@@ -309,19 +359,14 @@ export const HomeClient = () => {
                       <p className="w-40 text-end hidden md:block">
                         Sangat Tidak Setuju
                       </p>
-                      {Array.from({ length: 5 }, (_, i) => (
+                      {Array.from({ length: 4 }, (_, i) => (
                         <Button
                           key={i}
                           className={cn(
                             "rounded-full bg-transparent text-gray-900 dark:text-gray-50 border-[1.5px] transition-all hover:text-white cursor-pointer dark:bg-gray-950",
-                            i === 2 &&
-                              "w-12 aspect-square h-auto border-yellow-500 hover:bg-yellow-500 dark:hover:text-gray-950 dark:hover:bg-yellow-500",
-                            soalAcak[posSoal].score - 1 === i &&
-                              i === 2 &&
-                              "bg-yellow-500 dark:bg-yellow-500 text-white",
-                            (i === 1 || i === 3) &&
+                            (i === 1 || i === 2) &&
                               "w-14 aspect-square h-auto ",
-                            (i === 0 || i === 4) &&
+                            (i === 0 || i === 3) &&
                               "w-16 aspect-square h-auto text-lg",
                             soalAcak[posSoal].score - 1 === i &&
                               i === 0 &&
@@ -330,25 +375,31 @@ export const HomeClient = () => {
                               i === 1 &&
                               " bg-amber-500 dark:bg-amber-500 text-white",
                             soalAcak[posSoal].score - 1 === i &&
-                              i === 3 &&
+                              i === 2 &&
                               "bg-lime-500 dark:bg-lime-500 text-white",
                             soalAcak[posSoal].score - 1 === i &&
-                              i === 4 &&
+                              i === 3 &&
                               "bg-green-500 dark:border-green-500 text-white",
                             i === 0 &&
                               "border-red-500 hover:bg-red-500 dark:hover:text-gray-950 dark:hover:bg-red-500",
                             i === 1 &&
                               "border-amber-500 hover:bg-amber-500 dark:hover:text-gray-950 dark:hover:bg-amber-500",
-                            i === 3 &&
+                            i === 2 &&
                               "border-lime-500 hover:bg-lime-500 dark:hover:text-gray-950 dark:hover:bg-lime-500",
-                            i === 4 &&
+                            i === 3 &&
                               "border-green-500 hover:bg-green-500 dark:hover:text-gray-950 dark:hover:bg-green-500"
                           )}
                           onClick={() => {
                             if (posSoal === directSoal) {
-                              handleChangeJawaban(directSoal, i + 1);
+                              handleChangeJawaban(
+                                directSoal,
+                                i >= 2 ? i + 2 : i + 1
+                              );
                             } else {
-                              handleChangeJawaban(posSoal, i + 1);
+                              handleChangeJawaban(
+                                posSoal,
+                                i >= 2 ? i + 2 : i + 1
+                              );
                             }
                             if (
                               posSoal === directSoal &&

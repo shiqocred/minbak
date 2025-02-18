@@ -40,7 +40,7 @@ export default function RootLayout({
           >
             <Suspense>
               {children}
-              <Toaster />
+              <Toaster richColors />
             </Suspense>
           </ThemeProvider>
         </NuqsAdapter>
