@@ -489,7 +489,7 @@ export const HomeClient = () => {
                   </div>
                 </div>
               )}
-              {!current.isPaid && (
+              {current && !current.isPaid && (
                 <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
                   {!isPayment ? (
                     <div className="w-full max-w-sm h-[168px] p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">

@@ -66,6 +66,7 @@ export const POST = async (req: Request) => {
 
     await databases.updateDocument(DATABASE_ID, UTAMA_ID, sessionId, {
       reference: data.reference,
+      isPaid: false,
     });
 
     console.log(data);

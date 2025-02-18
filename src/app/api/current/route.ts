@@ -2,7 +2,7 @@ import { DATABASE_ID, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 
 export const GET = async () => {
   const cookie = await cookies();
@@ -27,13 +27,11 @@ export const GET = async () => {
     });
   }
 
-  const userDoc = await databases.getDocument(
-    DATABASE_ID,
-    UTAMA_ID,
-    userId.value
-  );
+  const userDoc = await databases.listDocuments(DATABASE_ID, UTAMA_ID, [
+    Query.equal("$id", userId.value),
+  ]);
 
-  if (!userDoc) {
+  if (userDoc.total === 0) {
     const token = ID.unique();
 
     await databases.createDocument(DATABASE_ID, UTAMA_ID, token, {
@@ -49,7 +47,9 @@ export const GET = async () => {
     });
   }
 
-  if (!userDoc.source) {
+  const docFound = userDoc.documents[0];
+
+  if (!docFound.source) {
     return Response.json({
       message: "Welcome again.",
       isPaid: false,
@@ -59,7 +59,7 @@ export const GET = async () => {
     });
   }
 
-  if (!userDoc.isPaid) {
+  if (!docFound.isPaid) {
     return Response.json({
       message: "Welcome again.",
       isPaid: false,
@@ -69,8 +69,8 @@ export const GET = async () => {
     });
   }
 
-  if (!userDoc.response) {
-    const finalPrompt = `${userDoc.source}
+  if (!docFound.response) {
+    const finalPrompt = `${docFound.source}
     Kamu adalah analis kepribadian berbasis AI yang cerdas dan naratif. Berdasarkan jawaban user dalam skala 1-5, berikan analisis kepribadian yang menarik, informatif, dan engaging berdasarkan **MBTI, DISC, dan Big Five Personality**.
     Buat output dalam bentuk **cerita yang menyenangkan** dengan struktur berikut:
     1. **Pembukaan yang personal & menarik**
@@ -159,9 +159,9 @@ export const GET = async () => {
 
   return Response.json({
     message: "Welcome again",
-    isPaid: userDoc.isPaid,
+    isPaid: docFound.isPaid,
     status: true,
     source: true,
-    data: userDoc.response,
+    data: docFound.response,
   });
 };
