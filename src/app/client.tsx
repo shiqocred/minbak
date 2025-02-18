@@ -202,11 +202,11 @@ export const HomeClient = () => {
       if (status === "02") {
         toast.warning("Pembayaran Dibatalkan");
       }
-    }
 
-    setTimeout(() => {
-      setStatus("");
-    }, 3000);
+      setTimeout(() => {
+        setStatus("");
+      }, 3000);
+    }
   }, [currentMemo, status]);
 
   useEffect(() => {
