@@ -68,6 +68,8 @@ export const POST = async (req: Request) => {
       reference: data.reference,
     });
 
+    console.log(data);
+
     return Response.json(data.paymentUrl);
   } catch (error) {
     console.log(error);

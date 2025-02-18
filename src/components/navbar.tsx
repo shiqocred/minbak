@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { MenuIcon, Monitor, MoonStarIcon, SunDimIcon } from "lucide-react";
+import { MenuIcon, MoonStarIcon, SunDimIcon } from "lucide-react";
 import Link from "next/link";
 import {
   Drawer,
@@ -13,7 +13,16 @@ import {
   DrawerTitle,
 } from "./ui/drawer";
 
-export const Navbar = () => {
+export const Navbar = ({
+  current,
+}: {
+  current: {
+    message: string;
+    data: string | null;
+    isPaid: boolean;
+    source: boolean;
+  };
+}) => {
   const [isMount, setIsMount] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -69,9 +78,11 @@ export const Navbar = () => {
           </Link>
         </Button>
         <div className="items-center justify-center gap-2 hidden lg:flex">
-          <Button asChild variant={"link"}>
-            <Link href={"/?page=result"}>Hasil Anda</Link>
-          </Button>
+          {current.source && (
+            <Button asChild variant={"link"}>
+              <Link href={"/?page=result"}>Hasil Anda</Link>
+            </Button>
+          )}
           <Button asChild variant={"link"}>
             <Link href={"/"}>Test Kepribadian</Link>
           </Button>
@@ -88,8 +99,6 @@ export const Navbar = () => {
           onClick={() => {
             if (theme === "light") {
               setTheme("dark");
-            } else if (theme === "dark") {
-              setTheme("system");
             } else {
               setTheme("light");
             }
@@ -97,7 +106,6 @@ export const Navbar = () => {
         >
           {theme === "light" && <MoonStarIcon />}
           {theme === "dark" && <SunDimIcon />}
-          {theme === "system" && <Monitor />}
         </Button>
       </div>
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
@@ -109,14 +117,16 @@ export const Navbar = () => {
             <DrawerDescription></DrawerDescription>
           </DrawerHeader>
           <div className="items-center justify-center gap-2 flex flex-col">
-            <Button
-              className="h-10"
-              asChild
-              variant={"link"}
-              onClick={() => setIsOpen(false)}
-            >
-              <Link href={"/?page=result"}>Hasil Anda</Link>
-            </Button>
+            {current.source && (
+              <Button
+                className="h-10"
+                asChild
+                variant={"link"}
+                onClick={() => setIsOpen(false)}
+              >
+                <Link href={"/?page=result"}>Hasil Anda</Link>
+              </Button>
+            )}
             <Button
               className="h-10"
               asChild

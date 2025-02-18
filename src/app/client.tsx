@@ -34,6 +34,7 @@ import { useQueryState } from "nuqs";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { Navbar } from "@/components/navbar";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
@@ -45,6 +46,12 @@ export const HomeClient = () => {
   const [isPayment, setIsPayment] = useState(false);
   const [isPaymentProcess, setIsPaymentProcess] = useState(false);
 
+  const [current, setCurrent] = useState<{
+    message: string;
+    data: string | null;
+    isPaid: boolean;
+    source: boolean;
+  } | null>(null);
   const [posSoal, setPosSoal] = useState(0);
   const [directSoal, setDirectSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
@@ -70,7 +77,7 @@ export const HomeClient = () => {
       }
 
       const data = await msg.json();
-      return data;
+      setCurrent(data);
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
@@ -96,15 +103,13 @@ export const HomeClient = () => {
         throw new Error("Failed to fetch");
       }
 
-      const data = await msg.json();
-
-      return data;
+      getCurrent();
+      setPage("result");
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
     } finally {
       setIsLoading(false);
-      setPage("result");
     }
   };
 
@@ -141,7 +146,7 @@ export const HomeClient = () => {
   const handleChangeJawaban = (index: number, jawabanBaru: number) => {
     setSoalAcak((prev) =>
       prev.map((item, i) =>
-        i === index ? { ...item, jawaban: jawabanBaru } : item
+        i === index ? { ...item, score: jawabanBaru } : item
       )
     );
   };
@@ -154,6 +159,12 @@ export const HomeClient = () => {
   }, [status]);
 
   useEffect(() => {
+    if (!current?.source && page === "result") {
+      setPage("");
+    }
+  }, [current, page]);
+
+  useEffect(() => {
     setIsMounted(true);
     getCurrent();
   }, []);
@@ -162,8 +173,18 @@ export const HomeClient = () => {
     return null;
   }
 
+  if (!current) {
+    return (
+      <div className="w-full h-full flex items-center justify-center flex-col gap-3">
+        <Loader className="size-7 animate-spin" />
+        <p className="animate-pulse">Memuat content</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full">
+      <Navbar current={current} />
       <AnimatePresence mode="wait" custom={page}>
         {page === "" && (
           <motion.div
@@ -371,7 +392,7 @@ export const HomeClient = () => {
                       setPosSoal(0);
                       setConfirm(false);
                     }}
-                    className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-400 hover:dark:bg-yellow-500 cursor-pointer"
+                    className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-400 hover:dark:bg-yellow-500 cursor-pointer text-black"
                   >
                     Lihat Jawaban
                     <ArrowRight />
@@ -399,65 +420,79 @@ export const HomeClient = () => {
             <div className="py-10 md:py-12 lg:py-0 h-full w-full relative">
               <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
                 <ReactMarkdown className={"w-full max-w-3xl mx-auto"}>
-                  {responseExample}
+                  {!current.isPaid || !current.data
+                    ? responseExample
+                    : current.data}
                 </ReactMarkdown>
               </ScrollArea>
-              <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
-                {!isPayment ? (
-                  <div className="w-full max-w-sm h-[168px] p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                    <p className="font-semibold text-center">
-                      Dapatkan hasilnya dengan membayar Rp. 10.000
-                    </p>
-                    <Button
-                      className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
-                      onClick={() => setIsPayment(true)}
-                    >
-                      <LockOpenIcon />
-                      Dapatkan Akses
-                    </Button>
+              {!current.data && current.isPaid && (
+                <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
+                  <div className="flex items-center justify-center w-full h-full gap-2">
+                    <Sparkles className="size-5 animate-pulse" />
+                    <p className="animate-pulse">Sedang Memuat Analisa...</p>
                   </div>
-                ) : (
-                  <div className="w-full max-w-sm overflow-hidden h-[168px] relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                    <form
-                      onSubmit={mutatePay}
-                      className="flex items-center justify-center flex-col gap-4 w-full"
-                    >
-                      <p className="font-semibold text-center">Masukan Email</p>
-                      <Input
-                        type="email"
-                        placeholder="example@mail.com"
-                        className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
-                        value={emailCustomer}
-                        onChange={(e) => setEmailCustomer(e.target.value)}
-                      />
-                      <div className="flex w-full items-center gap-2">
-                        <Button
-                          className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
-                          type="button"
-                          variant={"outline"}
-                          onClick={() => setIsPayment(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
-                          type="submit"
-                          disabled={!emailCustomer}
-                        >
-                          <CreditCardIcon />
-                          Lanjutkan Pembayaran
-                        </Button>
-                      </div>
-                    </form>
-                    {isPaymentProcess && (
-                      <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
-                        <Loader className="size-4 animate-spin" />
-                        Sedang di proses
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
+              {!current.isPaid && (
+                <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
+                  {!isPayment ? (
+                    <div className="w-full max-w-sm h-[168px] p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                      <p className="font-semibold text-center">
+                        Dapatkan hasilnya dengan membayar Rp. 10.000
+                      </p>
+                      <Button
+                        className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
+                        onClick={() => setIsPayment(true)}
+                      >
+                        <LockOpenIcon />
+                        Dapatkan Akses
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="w-full max-w-sm overflow-hidden h-[168px] relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                      <form
+                        onSubmit={mutatePay}
+                        className="flex items-center justify-center flex-col gap-4 w-full"
+                      >
+                        <p className="font-semibold text-center">
+                          Masukan Email
+                        </p>
+                        <Input
+                          type="email"
+                          placeholder="example@mail.com"
+                          className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                          value={emailCustomer}
+                          onChange={(e) => setEmailCustomer(e.target.value)}
+                        />
+                        <div className="flex w-full items-center gap-2">
+                          <Button
+                            className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
+                            type="button"
+                            variant={"outline"}
+                            onClick={() => setIsPayment(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
+                            type="submit"
+                            disabled={!emailCustomer}
+                          >
+                            <CreditCardIcon />
+                            Lanjutkan Pembayaran
+                          </Button>
+                        </div>
+                      </form>
+                      {isPaymentProcess && (
+                        <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
+                          <Loader className="size-4 animate-spin" />
+                          Sedang di proses
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
         )}
