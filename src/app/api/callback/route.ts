@@ -1,10 +1,11 @@
 import { DATABASE_ID, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Query } from "node-appwrite";
 
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
+    res.headers.set("Access-Control-Allow-Origin", "*");
     const { databases } = await createSessionClient();
     const body = await req.text();
     const params = new URLSearchParams(body);
