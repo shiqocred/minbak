@@ -1,11 +1,10 @@
 import { DATABASE_ID, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { Query } from "node-appwrite";
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   try {
-    res.headers.set("Access-Control-Allow-Origin", "*");
     const { databases } = await createSessionClient();
     const body = await req.text();
     const params = new URLSearchParams(body);
@@ -36,7 +35,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       }
     );
 
-    return Response.json({ success: true });
+    return Response.json(
+      { success: true },
+      { headers: { append: "Access-Control-Allow-Origin: *" } }
+    );
   } catch (error) {
     console.log("INTERNAL_ERROR:", error);
     return new Response("Internal Error", { status: 500 });
