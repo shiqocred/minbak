@@ -36,7 +36,6 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
-import Link from "next/link";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
