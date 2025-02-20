@@ -37,6 +37,7 @@ import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
 import { deleteCookie, getCookie } from "cookies-next/client";
+import { Label } from "@/components/ui/label";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
@@ -60,7 +61,11 @@ export const HomeClient = () => {
   const [directSoal, setDirectSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
 
-  const [emailCustomer, setEmailCustomer] = useState("");
+  const [input, setInput] = useState({
+    name: "",
+    email: "",
+    number: "",
+  });
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
 
@@ -126,7 +131,7 @@ export const HomeClient = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: emailCustomer }),
+        body: JSON.stringify({ input }),
       });
 
       if (!msg.ok) {
@@ -135,14 +140,14 @@ export const HomeClient = () => {
 
       const data = await msg.json();
 
-      setEmailCustomer("");
+      setInput({ name: "", email: "", number: "" });
+      setIsPayment(false);
       router.push(data);
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
     } finally {
       setIsPaymentProcess(false);
-      setIsPayment(false);
     }
   };
 
@@ -453,10 +458,12 @@ export const HomeClient = () => {
               </AnimatePresence>
               {confirm && (
                 <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center justify-center flex-col gap-4 backdrop-blur-sm bg-white/15 dark:bg-black/15">
-                  <p className="w-full max-w-md text-center bg-black/15 backdrop-blur-sm px-5">
-                    Jika ingin melanjutkan, anda akan kehilangan jawaban saat
-                    ini dan melakukan pembayaran ulang
-                  </p>
+                  {current.data && (
+                    <p className="w-full max-w-md text-center dark:bg-black/15 bg-white/15 backdrop-blur-sm px-5">
+                      Jika ingin melanjutkan, anda akan kehilangan jawaban saat
+                      ini dan melakukan pembayaran ulang
+                    </p>
+                  )}
                   <div className="flex gap-2">
                     <Button
                       onClick={() => setConfirm(false)}
@@ -536,16 +543,56 @@ export const HomeClient = () => {
                         onSubmit={mutatePay}
                         className="flex items-center justify-center flex-col gap-4 w-full"
                       >
-                        <p className="font-semibold text-center">
-                          Masukan Email
-                        </p>
-                        <Input
-                          type="email"
-                          placeholder="example@mail.com"
-                          className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
-                          value={emailCustomer}
-                          onChange={(e) => setEmailCustomer(e.target.value)}
-                        />
+                        <h5 className="font-semibold text-center">
+                          Masukan Data Diri Anda
+                        </h5>
+                        <div className="flex flex-col gap-1 w-full">
+                          <Label>Nama</Label>
+                          <Input
+                            type="text"
+                            placeholder="Jhon Doe"
+                            className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                            value={input.name}
+                            min={3}
+                            onChange={(e) =>
+                              setInput((prev) => ({
+                                ...prev,
+                                name: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1 w-full">
+                          <Label>Email</Label>
+                          <Input
+                            type="email"
+                            placeholder="example@mail.com"
+                            className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                            value={input.email}
+                            onChange={(e) =>
+                              setInput((prev) => ({
+                                ...prev,
+                                email: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1 w-full">
+                          <Label>No. Handphone</Label>
+                          <Input
+                            type="number"
+                            placeholder="0832382329"
+                            className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                            value={input.number}
+                            min={10}
+                            onChange={(e) =>
+                              setInput((prev) => ({
+                                ...prev,
+                                number: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
                         <div className="flex w-full items-center gap-2">
                           <Button
                             className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
@@ -558,7 +605,9 @@ export const HomeClient = () => {
                           <Button
                             className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
                             type="submit"
-                            disabled={!emailCustomer}
+                            disabled={
+                              !input.name || !input.number || !input.email
+                            }
                           >
                             <CreditCardIcon />
                             Lanjutkan Pembayaran

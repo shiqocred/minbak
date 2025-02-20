@@ -2,9 +2,10 @@ import { API_KEY, baseUrl, DATABASE_ID, PAYMENT_URL, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
 
-export const POST = async () => {
+export const POST = async (req: Request) => {
   try {
     const { databases } = await createSessionClient();
+    const { name, email, number } = await req.json();
 
     const cookie = await cookies();
     const sessionId = cookie.get("MBTI_SESSION")?.value;
@@ -27,9 +28,9 @@ export const POST = async () => {
     expiredPayment.setMinutes(new Date().getMinutes() + 10);
 
     const payload = {
-      name: "yanto",
-      email: "tes@mail.com",
-      mobile: "0888888888",
+      name: name,
+      email: email,
+      mobile: number,
       amount: 9000,
       redirectUrl: `${baseUrl}/?page=result`,
       description: "Pembayaran MBTI",
