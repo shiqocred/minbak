@@ -35,7 +35,7 @@ export const GET = async () => {
     const token = ID.unique();
 
     await databases.createDocument(DATABASE_ID, UTAMA_ID, token, {
-      isPaid: false,
+      isPaid: null,
     });
     cookie.set("MBTI_SESSION", token);
     return Response.json({

@@ -31,7 +31,7 @@ export const POST = async () => {
       email: "tes@mail.com",
       mobile: "0888888888",
       amount: 9000,
-      redirectUrl: `${baseUrl}`,
+      redirectUrl: `${baseUrl}/?page=result`,
       description: "Pembayaran MBTI",
       expiredAt: expiredPayment,
     };
