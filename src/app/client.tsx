@@ -131,7 +131,7 @@ export const HomeClient = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ input }),
+        body: JSON.stringify(input),
       });
 
       if (!msg.ok) {
@@ -538,7 +538,7 @@ export const HomeClient = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="w-full max-w-sm overflow-hidden h-[168px] relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                    <div className="w-full max-w-sm overflow-hidden h-[340px] relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
                       <form
                         onSubmit={mutatePay}
                         className="flex items-center justify-center flex-col gap-4 w-full"
@@ -551,7 +551,10 @@ export const HomeClient = () => {
                           <Input
                             type="text"
                             placeholder="Jhon Doe"
-                            className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                            className={cn(
+                              "text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900",
+                              input.name && "border-gray-900"
+                            )}
                             value={input.name}
                             min={3}
                             onChange={(e) =>
@@ -567,7 +570,10 @@ export const HomeClient = () => {
                           <Input
                             type="email"
                             placeholder="example@mail.com"
-                            className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                            className={cn(
+                              "text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900",
+                              input.email && "border-gray-900"
+                            )}
                             value={input.email}
                             onChange={(e) =>
                               setInput((prev) => ({
@@ -581,8 +587,11 @@ export const HomeClient = () => {
                           <Label>No. Handphone</Label>
                           <Input
                             type="number"
-                            placeholder="0832382329"
-                            className="text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900"
+                            placeholder="088888888888"
+                            className={cn(
+                              "text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900",
+                              input.number && "border-gray-900"
+                            )}
                             value={input.number}
                             min={10}
                             onChange={(e) =>
