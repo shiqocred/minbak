@@ -25,6 +25,8 @@ export const POST = async (req: Request) => {
 
   await databases.updateDocument(DATABASE_ID, UTAMA_ID, userDoc.$id, {
     source: JSON.stringify(soal),
+    isPaid: null,
+    response: null,
   });
 
   return Response.json({ status: true, message: "Soal created" });

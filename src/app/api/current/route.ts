@@ -15,12 +15,12 @@ export const GET = async () => {
     const token = ID.unique();
 
     await databases.createDocument(DATABASE_ID, UTAMA_ID, token, {
-      isPaid: false,
+      isPaid: null,
     });
     cookie.set("MBTI_SESSION", token);
     return Response.json({
       message: "User Created",
-      isPaid: false,
+      isPaid: null,
       status: true,
       source: false,
       data: null,
@@ -40,7 +40,7 @@ export const GET = async () => {
     cookie.set("MBTI_SESSION", token);
     return Response.json({
       message: "User Created",
-      isPaid: false,
+      isPaid: null,
       status: true,
       source: false,
       data: null,
@@ -52,17 +52,17 @@ export const GET = async () => {
   if (!docFound.source) {
     return Response.json({
       message: "Welcome again.",
-      isPaid: false,
+      isPaid: null,
       status: true,
       source: false,
       data: null,
     });
   }
 
-  if (!docFound.isPaid) {
+  if (!docFound.isPaid || docFound.isPaid !== "SUCCESS") {
     return Response.json({
       message: "Welcome again.",
-      isPaid: false,
+      isPaid: docFound.isPaid,
       status: true,
       source: true,
       data: null,

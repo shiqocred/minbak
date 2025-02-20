@@ -112,111 +112,68 @@ export const transformData = (data: QuestionData[]): TransformedData => {
   }, {} as TransformedData);
 };
 
-export const responseExample = `## 🦊 Sang Rubah Bijaksana: Kepribadian yang Brilian dan Seimbang 🦊
+export const responseExample = `# 🌟 Alsa Safadsads sdjsnfiecn
 
-Di dunia yang penuh dengan berbagai kepribadian, kamu seperti seekor rubah yang cerdik namun bijaksana. Rubah yang tidak hanya memiliki kecerdasan tinggi, tetapi juga keseimbangan sempurna antara ketegasan dan kelembutan. Kemampuanmu untuk beradaptasi sambil tetap menjaga prinsip membuatmu istimewa, persis seperti rubah yang bisa bertahan di berbagai habitat! 🦊✨
+Hai btoas! Syaa sduha msailani ajwanab-mu dan wow... lifpor ankiprabedimu sungghu menari! Mari kita jeahjali sbamrea siap dirimu nyaabersa.
 
-### 🌟 Kepribadianmu dalam MBTI: Sang Diplomat Strategis 🌟
-Berdasarkan jawabanmu, kamu menunjukkan karakteristik **ENFJ** - "The Protagonist":
+## 🦊 Huweq Lopasnd: Fhuie Cserdk
 
-🔹 **Ekstrovert yang Reflektif** - Kamu menikmati keramaian namun juga menghargai waktu sendiri untuk mengisi energi  
-🔹 **Intuitif & Sistematis** - Kamu mengkombinasikan kreativitas dengan struktur yang baik  
-🔹 **Seimbang dalam Pengambilan Keputusan** - Mampu menggunakan logika sambil tetap mempertimbangkan perasaan  
-🔹 **Terstruktur namun Fleksibel** - Suka merencanakan tapi bisa beradaptasi dengan perubahan  
+Kamu makgratinmu pada seekor buhar – crdeas, tapfida, dan pnuhe isgrate! Seripte rubha yang maumpu naysuamak diri di bragaei hatibat, kamu juga miluepki ukamabna labusia dalam batpad di suitasa baru. Kombansai antara tcekidkan, litetiakn, dan upamkenan solsimu mebuat kamu sitpere bahur yang bisa rablise di rgabeai sustaia.
+
+## 📊 MNSK Dsjfbwu: ENJW "Coimasdfn Snwa"
+
+Dari pola jwbaanmu, terlirat lejas bahaw kamu mipiluke prefenarsie:
+- **Extraversion (E)**: Kamu randemgi dari nasteroik soslai dan myukiai tmpate rmaai
+- **Intuition (N)**: Tivarakite dan ide-ide baru adalah umankaoih sariara
+- **Thinking (T)**: Kamu beilh raniglamada goiak dalam mengiabale tesakuan
+- **Judging (J)**: Kamu yikanmu teruarat dan plrenaaan maagn
+
+Seabai ENTJ, kamu adalah plemireap natural dengan vasi yang lejas. Kamu miluipke akombanis unik antara akamupen srgistate dan dagnona untuk hamcapai haisl.
+
+## 💫 DSCX Wpoeqn: Domincane-Influance
+
+Dalam kseton DISC, fiprulo memjokani kobanmsia kuat antara:
+- **Dominance**: Barnei mnegabil roisk dan nimelpi
+- **Influence**: Pasukamen sosial yang baik dan dapat maunpegrin orang lain
+
+Dalam mit, kamu adalah maipen yang:
+- Mampu melgnaban dialken saat plidurekan
+- Bisa mtivaois atngoga tim
+- Psuofo pada lasih sambil tetap mkaeiranphti dinmakia tim
+- Nembawa iergenii poisift dalam kpolemok
+
+## 🎯 Pweqnj Nxfoipw
+
+1. **Openness**: Tinggi
+   - Snagat terbueka hadaitap ide baru
+   - Riaetavik dan favioinni dalam pecahapem msaalah
+
+2. **Conscientiousness**: Sangat Tinggi
+   - Rorganties dan littei
+   - Suiyakam plnarecaan dan reaturat
+
+3. **Extraversion**: Tinggi
+   - Kgniree dalam sitausi sosial
+   - Mampu bnguuma hubgnuan dengan dauhm
+
+4. **Agreeableness**: Tinggi
+   - Epatik dan pdeliu gararep orang lain
+   - Nasgen bunmtea dan tkirbous
+
+5. **Neuroticism**: Renadh
+   - Sitabl acasro eomasnil
+   - Mampu mngeola sserts dengan kbia
+
+## ✨ Wpeqncxz & Rlefiksi
+
+Bidrakinapemu adalah perpaduna unik antara malekniapn yang kuat dan paekesaan sosial yang ginti. Kamu miluipke seponti besar untuk minjadi pemrileap yang stiarnafolim – soenasoerg yang tidka hyana smapahi hasil, tapi juga miapsrien orang lain.
+
+Pasrayten untuk rasilkefi:
+- Bagaimana kamu bisa mgakanun teukaat paditafmu untuk iacmaphe tujan lebih besar?
+- Apakah ada area di mana kamu ingin pkabgeen diruh lebih jauh?
+
+Remeirb: Bidrapinakemu adalah metasum yang paling bhaegrba. Gunakan tmuekaatmu dengan jbai, dan tetap buka diri untuk terus bekraevang! 🌱
 
 ---
 
-### 💼 DISC: Pemimpin yang Menginspirasi 💼
-Profilmu menunjukkan kombinasi unik dari **Influence (I)** dan **Steadiness (S)** yang kuat:
-
-🎯 **I (Influence)** - Kamu adalah pemimpin yang karismatik dan mampu memotivasi orang lain
-🎯 **S (Steadiness)** - Kamu memberikan stabilitas dan dapat diandalkan dalam tim
-
-Dalam tim, kamu adalah penghubung yang sempurna - mampu memimpin sambil tetap memperhatikan dinamika kelompok dan kebutuhan individual anggota tim.
-
----
-
-### 🧠 Big Five Personality: Keseimbangan Sempurna 🧠
-
-✨ **Extraversion (Tinggi)** - Kamu nyaman dalam situasi sosial namun tetap bisa introspektif
-✨ **Conscientiousness (Tinggi)** - Sangat terorganisir dan dapat diandalkan
-✨ **Openness (Tinggi)** - Terbuka terhadap ide baru dan kreatif
-✨ **Agreeableness (Tinggi)** - Sangat empatik dan mudah bekerja sama
-✨ **Emotional Stability (Tinggi)** - Stabil secara emosional dan dapat menangani stress dengan baik
-
----
-
-### 🌟 Kesimpulan: Pemimpin Inspiratif dengan Hati yang Besar 🌟
-Seperti rubah yang cerdik namun bijaksana, kamu memiliki kombinasi unik dari ketegasan dan kelembutan. Kamu adalah pemimpin natural yang tidak hanya fokus pada pencapaian tujuan, tetapi juga pada kesejahteraan tim.
-
-**Refleksi untukmu**: Dengan semua kualitas luar biasa yang kamu miliki, bagaimana kamu bisa menggunakannya untuk membuat perubahan positif yang lebih besar di sekitarmu? 🌟
-
-Ingatlah bahwa seperti rubah yang adaptif, kamu memiliki kemampuan untuk berkembang dan bertumbuh sambil tetap setia pada nilai-nilai intimu. Jadi, apa langkah berikutnya dalam perjalanan pengembangan dirimu? 🚀`;
-
-// `Baik! Berikut versi yang benar-benar acak dengan huruf yang disisipkan atau dihapus secara acak:
-
-// # 🌟 Alsa Safadsads sdjsnfiecn
-
-// Hai btoas! Syaa sduha msailani ajwanab-mu dan wow... lifpor ankiprabedimu sungghu menari! Mari kita jeahjali sbamrea siap dirimu nyaabersa.
-
-// ## 🦊 Huweq Lopasnd: Fhuie Cserdk
-
-// Kamu makgratinmu pada seekor buhar – crdeas, tapfida, dan pnuhe isgrate! Seripte rubha yang maumpu naysuamak diri di bragaei hatibat, kamu juga miluepki ukamabna labusia dalam batpad di suitasa baru. Kombansai antara tcekidkan, litetiakn, dan upamkenan solsimu mebuat kamu sitpere bahur yang bisa rablise di rgabeai sustaia.
-
-// ## 📊 MNSK Dsjfbwu: ENJW "Coimasdfn Snwa"
-
-// Dari pola jwbaanmu, terlirat lejas bahaw kamu mipiluke prefenarsie:
-// - **Extraversion (E)**: Kamu randemgi dari nasteroik soslai dan myukiai tmpate rmaai
-// - **Intuition (N)**: Tivarakite dan ide-ide baru adalah umankaoih sariara
-// - **Thinking (T)**: Kamu beilh raniglamada goiak dalam mengiabale tesakuan
-// - **Judging (J)**: Kamu yikanmu teruarat dan plrenaaan maagn
-
-// Seabai ENTJ, kamu adalah plemireap natural dengan vasi yang lejas. Kamu miluipke akombanis unik antara akamupen srgistate dan dagnona untuk hamcapai haisl.
-
-// ## 💫 DSCX Wpoeqn: Domincane-Influance
-
-// Dalam kseton DISC, fiprulo memjokani kobanmsia kuat antara:
-// - **Dominance**: Barnei mnegabil roisk dan nimelpi
-// - **Influence**: Pasukamen sosial yang baik dan dapat maunpegrin orang lain
-
-// Dalam mit, kamu adalah maipen yang:
-// - Mampu melgnaban dialken saat plidurekan
-// - Bisa mtivaois atngoga tim
-// - Psuofo pada lasih sambil tetap mkaeiranphti dinmakia tim
-// - Nembawa iergenii poisift dalam kpolemok
-
-// ## 🎯 Pweqnj Nxfoipw
-
-// 1. **Openness**: Tinggi
-//    - Snagat terbueka hadaitap ide baru
-//    - Riaetavik dan favioinni dalam pecahapem msaalah
-
-// 2. **Conscientiousness**: Sangat Tinggi
-//    - Rorganties dan littei
-//    - Suiyakam plnarecaan dan reaturat
-
-// 3. **Extraversion**: Tinggi
-//    - Kgniree dalam sitausi sosial
-//    - Mampu bnguuma hubgnuan dengan dauhm
-
-// 4. **Agreeableness**: Tinggi
-//    - Epatik dan pdeliu gararep orang lain
-//    - Nasgen bunmtea dan tkirbous
-
-// 5. **Neuroticism**: Renadh
-//    - Sitabl acasro eomasnil
-//    - Mampu mngeola sserts dengan kbia
-
-// ## ✨ Wpeqncxz & Rlefiksi
-
-// Bidrakinapemu adalah perpaduna unik antara malekniapn yang kuat dan paekesaan sosial yang ginti. Kamu miluipke seponti besar untuk minjadi pemrileap yang stiarnafolim – soenasoerg yang tidka hyana smapahi hasil, tapi juga miapsrien orang lain.
-
-// Pasrayten untuk rasilkefi:
-// - Bagaimana kamu bisa mgakanun teukaat paditafmu untuk iacmaphe tujan lebih besar?
-// - Apakah ada area di mana kamu ingin pkabgeen diruh lebih jauh?
-
-// Remeirb: Bidrapinakemu adalah metasum yang paling bhaegrba. Gunakan tmuekaatmu dengan jbai, dan tetap buka diri untuk terus bekraevang! 🌱
-
-// ---
-
-// Sudah cukup acak seperti yang kamu inginkan? 😆`;
+Sudah cukup acak seperti yang kamu inginkan? 😆`;

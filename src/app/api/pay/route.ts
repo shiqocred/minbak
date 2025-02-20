@@ -1,19 +1,10 @@
-import {
-  API_KEY,
-  baseUrl,
-  DATABASE_ID,
-  MERCHANT_CODE,
-  PAYMENT_URL,
-  UTAMA_ID,
-} from "@/config";
+import { API_KEY, baseUrl, DATABASE_ID, PAYMENT_URL, UTAMA_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
-import crypto from "crypto";
 import { cookies } from "next/headers";
 
-export const POST = async (req: Request) => {
+export const POST = async () => {
   try {
     const { databases } = await createSessionClient();
-    const { email } = await req.json();
 
     const cookie = await cookies();
     const sessionId = cookie.get("MBTI_SESSION")?.value;
@@ -21,38 +12,35 @@ export const POST = async (req: Request) => {
     if (!sessionId) {
       return new Response("Data not found.", { status: 404 });
     }
-    // Generate timestamp dalam milidetik (Jakarta Time)
-    const timestamp = Date.now().toString();
 
-    // Membuat signature SHA256
-    const signatureString = `${MERCHANT_CODE}${timestamp}${API_KEY}`;
-    const signature = crypto
-      .createHash("sha256")
-      .update(signatureString)
-      .digest("hex");
+    const existingDoc = await databases.getDocument(
+      DATABASE_ID,
+      UTAMA_ID,
+      sessionId
+    );
+
+    if (!existingDoc) {
+      return new Response("Data not found.", { status: 404 });
+    }
+
+    const expiredPayment = new Date();
+    expiredPayment.setMinutes(new Date().getMinutes() + 10);
 
     const payload = {
-      paymentAmount: 10000,
-      merchantOrderId: `${sessionId}-${timestamp}`,
-      productDetails: "Payment for result test",
-      additionalParam: "",
-      merchantUserInfo: "",
-      customerVaName: "",
-      email: email,
-      phoneNumber: "",
-      callbackUrl: `${baseUrl}/api/callback`,
-      returnUrl: `${baseUrl}/redirect`,
-      expiryPeriod: 10,
+      name: "yanto",
+      email: "tes@mail.com",
+      mobile: "0888888888",
+      amount: 9000,
+      redirectUrl: `${baseUrl}`,
+      description: "Pembayaran MBTI",
+      expiredAt: expiredPayment,
     };
 
     const response = await fetch(PAYMENT_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
-        "x-duitku-signature": signature,
-        "x-duitku-timestamp": timestamp,
-        "x-duitku-merchantcode": MERCHANT_CODE,
+        Authorization: `Bearer ${API_KEY}`,
       },
       body: JSON.stringify(payload),
     });
@@ -62,15 +50,14 @@ export const POST = async (req: Request) => {
       return new Response("Gateway Error", { status: 400 });
     }
 
-    const data = await response.json();
+    const { data } = await response.json();
 
-    await databases.updateDocument(DATABASE_ID, UTAMA_ID, sessionId, {
-      reference: data.reference,
-      isPaid: false,
-      response: null,
+    await databases.updateDocument(DATABASE_ID, UTAMA_ID, existingDoc.$id, {
+      reference: data.id,
+      isPaid: "WAIT",
     });
 
-    return Response.json(data.paymentUrl);
+    return Response.json(data.link);
   } catch (error) {
     console.log(error);
     return new Response("Internal Error", { status: 500 });

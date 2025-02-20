@@ -5,41 +5,17 @@ import { Query } from "node-appwrite";
 
 export const POST = async (req: NextRequest) => {
   try {
-    // Pastikan request memiliki Content-Type yang benar
-    if (
-      req.headers.get("content-type") !== "application/x-www-form-urlencoded"
-    ) {
-      return new NextResponse("Invalid Content-Type", {
-        status: 415, // Unsupported Media Type
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-      });
-    }
-
     // Parsing body URL-encoded
-    const body = await req.text();
-    const params = new URLSearchParams(body);
-    const resultCode = params.get("resultCode");
-    const reference = params.get("reference");
+    const body = await req.json();
 
-    if (!resultCode || !reference) {
-      return new NextResponse("Missing data required", {
-        status: 400,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-      });
-    }
+    console.log(body);
+
+    const { status, productId } = body.data;
 
     // Appwrite Query
     const { databases } = await createSessionClient();
     const existingDoc = await databases.listDocuments(DATABASE_ID, UTAMA_ID, [
-      Query.equal("reference", reference),
+      Query.equal("reference", productId),
     ]);
 
     if (existingDoc.total === 0) {
@@ -53,23 +29,12 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    if (resultCode === "01" || resultCode === "02") {
-      return new NextResponse("Payment failed", {
-        status: 400,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-      });
-    }
-
     await databases.updateDocument(
       DATABASE_ID,
       UTAMA_ID,
       existingDoc.documents[0].$id,
       {
-        isPaid: true,
+        isPaid: status === "SUCCESS" ? "SUCCESS" : "FALSE",
       }
     );
 
