@@ -10,6 +10,9 @@ export const GET = async () => {
   const { databases } = await createSessionClient();
 
   const userId = cookie.get("MBTI_SESSION");
+  const notif = cookie.get("notif");
+  const setNotif = (data: string) => cookie.set("notif", data);
+  const delNotif = () => cookie.delete("notif");
 
   if (!userId?.value) {
     const token = ID.unique();
@@ -18,6 +21,9 @@ export const GET = async () => {
       isPaid: null,
     });
     cookie.set("MBTI_SESSION", token);
+    if (notif) {
+      delNotif();
+    }
     return Response.json({
       message: "User Created",
       isPaid: null,
@@ -38,6 +44,9 @@ export const GET = async () => {
       isPaid: null,
     });
     cookie.set("MBTI_SESSION", token);
+    if (notif) {
+      delNotif();
+    }
     return Response.json({
       message: "User Created",
       isPaid: null,
@@ -50,6 +59,9 @@ export const GET = async () => {
   const docFound = userDoc.documents[0];
 
   if (!docFound.source) {
+    if (notif) {
+      delNotif();
+    }
     return Response.json({
       message: "Welcome again.",
       isPaid: null,
@@ -60,6 +72,9 @@ export const GET = async () => {
   }
 
   if (!docFound.isPaid || docFound.isPaid !== "SUCCESS") {
+    if (docFound.isPaid === "FALSE") {
+      setNotif("01");
+    }
     return Response.json({
       message: "Welcome again.",
       isPaid: docFound.isPaid,
@@ -147,6 +162,8 @@ export const GET = async () => {
       UTAMA_ID,
       userId.value
     );
+
+    setNotif("00");
 
     return Response.json({
       message: "Welcome again.",

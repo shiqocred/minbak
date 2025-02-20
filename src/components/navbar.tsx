@@ -19,7 +19,7 @@ export const Navbar = ({
   current?: {
     message: string;
     data: string | null;
-    isPaid: boolean;
+    isPaid: "SUCCESS" | "FALSE" | "WAIT" | null;
     source: boolean;
   };
 }) => {

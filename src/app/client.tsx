@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
-import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
@@ -36,10 +36,12 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
+import { deleteCookie, getCookie } from "cookies-next/client";
 
 export const HomeClient = () => {
   const { theme } = useTheme();
   const router = useRouter();
+  const notif = getCookie("notif");
 
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -51,21 +53,16 @@ export const HomeClient = () => {
   const [current, setCurrent] = useState<{
     message: string;
     data: string | null;
-    isPaid: boolean;
+    isPaid: "SUCCESS" | "FALSE" | "WAIT" | null;
     source: boolean;
   } | null>(null);
   const [posSoal, setPosSoal] = useState(0);
   const [directSoal, setDirectSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
-  const [status, setStatus] = useQueryState("status", { defaultValue: "" });
 
   const [emailCustomer, setEmailCustomer] = useState("");
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
-
-  const currentMemo = useMemo(() => {
-    return current;
-  }, [current]);
 
   const getCurrent = async () => {
     setIsLoading(true);
@@ -158,56 +155,50 @@ export const HomeClient = () => {
   };
 
   useEffect(() => {
-    if (currentMemo) {
-      if (status === "00") {
-        const duration = 5 * 1000;
-        const animationEnd = Date.now() + duration;
-        const defaults = {
-          startVelocity: 30,
-          spread: 360,
-          ticks: 60,
-          zIndex: 0,
-        };
+    if (notif === "00") {
+      const duration = 5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = {
+        startVelocity: 30,
+        spread: 360,
+        ticks: 60,
+        zIndex: 0,
+      };
 
-        const randomInRange = (min: number, max: number) =>
-          Math.random() * (max - min) + min;
+      const randomInRange = (min: number, max: number) =>
+        Math.random() * (max - min) + min;
 
-        const interval = window.setInterval(() => {
-          const timeLeft = animationEnd - Date.now();
+      const interval = window.setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
 
-          if (timeLeft <= 0) {
-            return clearInterval(interval);
-          }
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
 
-          const particleCount = 50 * (timeLeft / duration);
-          confetti({
-            ...defaults,
-            particleCount,
-            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-          });
-          confetti({
-            ...defaults,
-            particleCount,
-            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-          });
-        }, 250);
+        const particleCount = 50 * (timeLeft / duration);
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        });
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+        });
+      }, 250);
 
-        toast.success("Pembayaran Berhasil");
-      }
+      toast.success("Pembayaran Berhasil");
 
-      if (status === "01") {
-        toast.error("Pembayaran Gagal");
-      }
-
-      if (status === "02") {
-        toast.warning("Pembayaran Dibatalkan");
-      }
-
-      setTimeout(() => {
-        setStatus("");
-      }, 3000);
+      return deleteCookie("notif");
     }
-  }, [currentMemo, status]);
+
+    if (notif === "01") {
+      toast.error("Pembayaran Gagal");
+
+      return deleteCookie("notif");
+    }
+  }, [notif]);
 
   useEffect(() => {
     if (current && !current.source && page === "result") {
@@ -222,6 +213,13 @@ export const HomeClient = () => {
   useEffect(() => {
     setIsMounted(true);
     getCurrent();
+
+    const currentUrl = window.location.href;
+    const fixedUrl = currentUrl.replace(/\?page=result\?$/, "?page=result");
+
+    if (currentUrl !== fixedUrl) {
+      router.replace(fixedUrl); // Redirect tanpa history baru
+    }
   }, []);
 
   if (!isMounted) {
@@ -257,12 +255,12 @@ export const HomeClient = () => {
               disabled={!current.source}
               onClick={() => router.push("/?page=result")}
             >
-              {current.source && !current.isPaid && "🌱"}
+              {current.source && current.isPaid !== "SUCCESS" && "🌱"}
               {current.data && "🎉"}
               {!current.source && "🐣"}
               <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
               <span className={cn(`inline animate-gradient dark:text-white`)}>
-                {current.source && !current.isPaid
+                {current.source && current.isPaid !== "SUCCESS"
                   ? "Cukup Rp. 9000 untuk mengenali dirimu"
                   : !current.source
                   ? "Who are you guys?"
@@ -504,12 +502,12 @@ export const HomeClient = () => {
             <div className="py-2 md:py-5 lg:py-0 h-full w-full relative">
               <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
                 <ReactMarkdown className={"w-full max-w-3xl mx-auto"}>
-                  {!current.isPaid || !current.data
+                  {current.isPaid !== "SUCCESS" || !current.data
                     ? responseExample
                     : current.data}
                 </ReactMarkdown>
               </ScrollArea>
-              {!current.data && current.isPaid && (
+              {!current.data && current.isPaid === "SUCCESS" && (
                 <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
                   <div className="flex items-center justify-center w-full h-full gap-2">
                     <Sparkles className="size-5 animate-pulse" />
@@ -517,7 +515,7 @@ export const HomeClient = () => {
                   </div>
                 </div>
               )}
-              {current && !current.isPaid && (
+              {current && current.isPaid !== "SUCCESS" && (
                 <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
                   {!isPayment ? (
                     <div className="w-full max-w-sm h-[168px] p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
