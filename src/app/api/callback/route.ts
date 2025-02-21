@@ -8,8 +8,6 @@ export const POST = async (req: NextRequest) => {
     // Parsing body URL-encoded
     const body = await req.json();
 
-    console.log(body);
-
     const { status, productId } = body.data;
 
     // Appwrite Query
