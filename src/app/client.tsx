@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
@@ -37,14 +37,12 @@ import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
 import { deleteCookie, getCookie } from "cookies-next/client";
-import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -82,12 +80,6 @@ export const HomeClient = () => {
   const [posSoal, setPosSoal] = useState(0);
   const [directSoal, setDirectSoal] = useState(0);
   const [page, setPage] = useQueryState("page", { defaultValue: "" });
-
-  const [input, setInput] = useState({
-    name: "",
-    email: "",
-    number: "",
-  });
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
 
@@ -170,7 +162,7 @@ export const HomeClient = () => {
 
       const data = await msg.json();
 
-      setInput({ name: "", email: "", number: "" });
+      form.reset();
       setIsPayment(false);
       router.push(data);
     } catch (error) {
