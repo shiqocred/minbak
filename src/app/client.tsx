@@ -38,6 +38,28 @@ import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
 import { deleteCookie, getCookie } from "cookies-next/client";
 import { Label } from "@/components/ui/label";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email" }),
+  name: z.string().trim().min(3, {
+    message: "Minimal 3 karakter",
+  }),
+  number: z.string().trim().min(10, {
+    message: "Minimal 10 angka",
+  }),
+});
 
 export const HomeClient = () => {
   const { theme } = useTheme();
@@ -68,6 +90,15 @@ export const HomeClient = () => {
   });
 
   const [soalAcak, setSoalAcak] = useState<ConvertedData[]>(getSoalAcak());
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      number: "",
+    },
+  });
 
   const getCurrent = async () => {
     setIsLoading(true);
@@ -121,8 +152,7 @@ export const HomeClient = () => {
     }
   };
 
-  const mutatePay = async (e: FormEvent) => {
-    e.preventDefault();
+  const mutatePay = async (values: z.infer<typeof formSchema>) => {
     setIsPaymentProcess(true);
     try {
       const msg = await fetch("/api/pay", {
@@ -131,7 +161,7 @@ export const HomeClient = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(input),
+        body: JSON.stringify(values),
       });
 
       if (!msg.ok) {
@@ -525,7 +555,7 @@ export const HomeClient = () => {
               {current && current.isPaid !== "SUCCESS" && (
                 <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
                   {!isPayment ? (
-                    <div className="w-full max-w-sm h-[168px] p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                    <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
                       <p className="font-semibold text-center">
                         Dapatkan hasilnya dengan membayar Rp. 10.000
                       </p>
@@ -538,91 +568,81 @@ export const HomeClient = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="w-full max-w-sm overflow-hidden h-[340px] relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                      <form
-                        onSubmit={mutatePay}
-                        className="flex items-center justify-center flex-col gap-4 w-full"
-                      >
-                        <h5 className="font-semibold text-center">
-                          Masukan Data Diri Anda
-                        </h5>
-                        <div className="flex flex-col gap-1 w-full">
-                          <Label>Nama</Label>
-                          <Input
-                            type="text"
-                            placeholder="Jhon Doe"
-                            className={cn(
-                              "text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900",
-                              input.name && "border-gray-900"
+                    <div className="w-full max-w-sm overflow-hidden  relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                      <Form {...form}>
+                        <form
+                          onSubmit={form.handleSubmit(mutatePay)}
+                          className="flex items-center justify-center flex-col gap-4 w-full"
+                        >
+                          <h5 className="font-semibold text-center">
+                            Masukan Data Diri Anda
+                          </h5>
+                          <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                              <FormItem className="w-full">
+                                <FormLabel>Nama</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Jhon Doe" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
                             )}
-                            value={input.name}
-                            min={3}
-                            onChange={(e) =>
-                              setInput((prev) => ({
-                                ...prev,
-                                name: e.target.value,
-                              }))
-                            }
                           />
-                        </div>
-                        <div className="flex flex-col gap-1 w-full">
-                          <Label>Email</Label>
-                          <Input
-                            type="email"
-                            placeholder="example@mail.com"
-                            className={cn(
-                              "text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900",
-                              input.email && "border-gray-900"
+                          <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                              <FormItem className="w-full">
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="email"
+                                    placeholder="example@mail.com"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
                             )}
-                            value={input.email}
-                            onChange={(e) =>
-                              setInput((prev) => ({
-                                ...prev,
-                                email: e.target.value,
-                              }))
-                            }
                           />
-                        </div>
-                        <div className="flex flex-col gap-1 w-full">
-                          <Label>No. Handphone</Label>
-                          <Input
-                            type="number"
-                            placeholder="088888888888"
-                            className={cn(
-                              "text-center focus-visible:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-none border-gray-500 focus-visible:border-gray-900",
-                              input.number && "border-gray-900"
+                          <FormField
+                            control={form.control}
+                            name="number"
+                            render={({ field }) => (
+                              <FormItem className="w-full">
+                                <FormLabel>Phone</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="number"
+                                    placeholder="088888888888"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
                             )}
-                            value={input.number}
-                            min={10}
-                            onChange={(e) =>
-                              setInput((prev) => ({
-                                ...prev,
-                                number: e.target.value,
-                              }))
-                            }
                           />
-                        </div>
-                        <div className="flex w-full items-center gap-2">
-                          <Button
-                            className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
-                            type="button"
-                            variant={"outline"}
-                            onClick={() => setIsPayment(false)}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
-                            type="submit"
-                            disabled={
-                              !input.name || !input.number || !input.email
-                            }
-                          >
-                            <CreditCardIcon />
-                            Lanjutkan Pembayaran
-                          </Button>
-                        </div>
-                      </form>
+                          <div className="flex w-full items-center gap-2">
+                            <Button
+                              className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
+                              type="button"
+                              variant={"outline"}
+                              onClick={() => setIsPayment(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
+                              type="submit"
+                            >
+                              <CreditCardIcon />
+                              Lanjutkan Pembayaran
+                            </Button>
+                          </div>
+                        </form>
+                      </Form>
                       {isPaymentProcess && (
                         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
                           <Loader className="size-4 animate-spin" />
