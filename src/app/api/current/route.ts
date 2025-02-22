@@ -1,5 +1,6 @@
-import { DATABASE_ID, UTAMA_ID } from "@/config";
+import { CORE_ID, DATABASE_ID, PAYMENT_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
+import { generateToken } from "@/lib/utils";
 import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
 import { ID, Query } from "node-appwrite";
@@ -15,12 +16,36 @@ export const GET = async () => {
   const delNotif = () => cookie.delete("notif");
 
   if (!userId?.value) {
-    const token = ID.unique();
+    let token;
+    let isUnique = false;
 
-    await databases.createDocument(DATABASE_ID, UTAMA_ID, token, {
-      isPaid: null,
+    while (!isUnique) {
+      token = generateToken(50);
+
+      // Cek apakah token sudah ada di database
+      const existingSessions = await databases.listDocuments(
+        DATABASE_ID,
+        CORE_ID,
+        [Query.equal("sessionId", token)]
+      );
+
+      if (existingSessions.documents.length === 0) {
+        isUnique = true;
+      }
+    }
+
+    await databases.createDocument(DATABASE_ID, CORE_ID, ID.unique(), {
+      sessionId: token,
+      source: null,
+      response: null,
+      paymentId: null,
     });
-    cookie.set("MBTI_SESSION", token);
+
+    cookie.set("MBTI_SESSION", token as string, {
+      maxAge: 30 * 24 * 60 * 60, // 30 hari dalam detik
+      path: "/",
+    });
+
     if (notif) {
       delNotif();
     }
@@ -33,17 +58,41 @@ export const GET = async () => {
     });
   }
 
-  const userDoc = await databases.listDocuments(DATABASE_ID, UTAMA_ID, [
-    Query.equal("$id", userId.value),
+  const userDoc = await databases.listDocuments(DATABASE_ID, CORE_ID, [
+    Query.equal("sessionId", userId.value),
   ]);
 
   if (userDoc.total === 0) {
-    const token = ID.unique();
+    let token;
+    let isUnique = false;
 
-    await databases.createDocument(DATABASE_ID, UTAMA_ID, token, {
-      isPaid: null,
+    while (!isUnique) {
+      token = generateToken(50);
+
+      // Cek apakah token sudah ada di database
+      const existingSessions = await databases.listDocuments(
+        DATABASE_ID,
+        CORE_ID,
+        [Query.equal("sessionId", token)]
+      );
+
+      if (existingSessions.documents.length === 0) {
+        isUnique = true;
+      }
+    }
+
+    await databases.createDocument(DATABASE_ID, CORE_ID, ID.unique(), {
+      sessionId: token,
+      source: null,
+      response: null,
+      paymentId: null,
     });
-    cookie.set("MBTI_SESSION", token);
+
+    cookie.set("MBTI_SESSION", token as string, {
+      maxAge: 30 * 24 * 60 * 60, // 30 hari dalam detik
+      path: "/",
+    });
+
     if (notif) {
       delNotif();
     }
@@ -58,7 +107,7 @@ export const GET = async () => {
 
   const docFound = userDoc.documents[0];
 
-  if (!docFound.source) {
+  if (!docFound.source && !docFound.paymentId) {
     if (notif) {
       delNotif();
     }
@@ -71,8 +120,40 @@ export const GET = async () => {
     });
   }
 
-  if (!docFound.isPaid || docFound.isPaid !== "SUCCESS") {
-    if (docFound.isPaid === "FALSE") {
+  if (docFound.source && !docFound.paymentId) {
+    if (notif) {
+      delNotif();
+    }
+    return Response.json({
+      message: "Welcome again.",
+      isPaid: null,
+      status: true,
+      source: true,
+      data: null,
+    });
+  }
+
+  const payment = await databases.getDocument(
+    DATABASE_ID,
+    PAYMENT_ID,
+    docFound.paymentId
+  );
+
+  if (docFound.source && !payment) {
+    if (notif) {
+      delNotif();
+    }
+    return Response.json({
+      message: "Welcome again.",
+      isPaid: null,
+      status: true,
+      source: true,
+      data: null,
+    });
+  }
+
+  if (!payment.isPaid || payment.isPaid !== "SUCCESS") {
+    if (payment.isPaid === "FALSE") {
       setNotif("01");
     }
     return Response.json({
@@ -84,7 +165,7 @@ export const GET = async () => {
     });
   }
 
-  if (!docFound.response) {
+  if (!docFound.response && payment.isPaid === "SUCCESS") {
     const finalPrompt = `${docFound.source}
     Kamu adalah analis kepribadian berbasis AI yang cerdas dan naratif. Berdasarkan jawaban user dalam skala 1-5, berikan analisis kepribadian yang menarik, informatif, dan engaging berdasarkan **MBTI, DISC, dan Big Five Personality**.
     Buat output dalam bentuk **cerita yang menyenangkan** dengan struktur berikut:
@@ -153,21 +234,26 @@ export const GET = async () => {
       messages: [{ role: "user", content: finalPrompt }],
     });
 
-    await databases.updateDocument(DATABASE_ID, UTAMA_ID, userId.value, {
-      response: (msg.content[0] as Anthropic.TextBlock).text ?? "",
-    });
-
-    const updatedDoc = await databases.getDocument(
+    const updatedDoc = await databases.updateDocument(
       DATABASE_ID,
-      UTAMA_ID,
-      userId.value
+      CORE_ID,
+      docFound.$id,
+      {
+        response: (msg.content[0] as Anthropic.TextBlock).text ?? "",
+      }
+    );
+
+    const paymentUpdate = await databases.getDocument(
+      DATABASE_ID,
+      PAYMENT_ID,
+      updatedDoc.paymentId
     );
 
     setNotif("00");
 
     return Response.json({
       message: "Welcome again.",
-      isPaid: updatedDoc.isPaid,
+      isPaid: paymentUpdate.isPaid,
       status: true,
       source: true,
       data: updatedDoc.response,
@@ -176,7 +262,7 @@ export const GET = async () => {
 
   return Response.json({
     message: "Welcome again",
-    isPaid: docFound.isPaid,
+    isPaid: payment.isPaid,
     status: true,
     source: true,
     data: docFound.response,

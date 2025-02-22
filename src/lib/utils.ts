@@ -112,6 +112,16 @@ export const transformData = (data: QuestionData[]): TransformedData => {
   }, {} as TransformedData);
 };
 
+export const generateToken = (length: number = 16): string => {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let token = "";
+  for (let i = 0; i < length; i++) {
+    token += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return token;
+};
+
 export const responseExample = `# 🌟 Alsa Safadsads sdjsnfiecn
 
 Hai btoas! Syaa sduha msailani ajwanab-mu dan wow... lifpor ankiprabedimu sungghu menari! Mari kita jeahjali sbamrea siap dirimu nyaabersa.

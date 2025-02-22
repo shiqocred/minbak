@@ -1,4 +1,4 @@
-import { DATABASE_ID, UTAMA_ID } from "@/config";
+import { DATABASE_ID, PAYMENT_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { NextRequest, NextResponse } from "next/server";
 import { Query } from "node-appwrite";
@@ -8,11 +8,22 @@ export const POST = async (req: NextRequest) => {
     // Parsing body URL-encoded
     const body = await req.json();
 
+    if (body.event !== "payment.received") {
+      return new NextResponse("Event invalid", {
+        status: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+      });
+    }
+
     const { status, productId } = body.data;
 
     // Appwrite Query
     const { databases } = await createSessionClient();
-    const existingDoc = await databases.listDocuments(DATABASE_ID, UTAMA_ID, [
+    const existingDoc = await databases.listDocuments(DATABASE_ID, PAYMENT_ID, [
       Query.equal("reference", productId),
     ]);
 
@@ -29,7 +40,7 @@ export const POST = async (req: NextRequest) => {
 
     await databases.updateDocument(
       DATABASE_ID,
-      UTAMA_ID,
+      PAYMENT_ID,
       existingDoc.documents[0].$id,
       {
         isPaid: status === "SUCCESS" ? "SUCCESS" : "FALSE",

@@ -1,6 +1,14 @@
-import { API_KEY, baseUrl, DATABASE_ID, PAYMENT_URL, UTAMA_ID } from "@/config";
+import {
+  API_KEY,
+  baseUrl,
+  CORE_ID,
+  DATABASE_ID,
+  PAYMENT_ID,
+  PAYMENT_URL,
+} from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
+import { ID, Query } from "node-appwrite";
 
 export const POST = async (req: Request) => {
   try {
@@ -14,13 +22,11 @@ export const POST = async (req: Request) => {
       return new Response("Data not found.", { status: 404 });
     }
 
-    const existingDoc = await databases.getDocument(
-      DATABASE_ID,
-      UTAMA_ID,
-      sessionId
-    );
+    const existingDoc = await databases.listDocuments(DATABASE_ID, CORE_ID, [
+      Query.equal("sessionId", sessionId),
+    ]);
 
-    if (!existingDoc) {
+    if (existingDoc.total === 0) {
       return new Response("Data not found.", { status: 404 });
     }
 
@@ -53,10 +59,25 @@ export const POST = async (req: Request) => {
 
     const { data } = await response.json();
 
-    await databases.updateDocument(DATABASE_ID, UTAMA_ID, existingDoc.$id, {
-      reference: data.id,
-      isPaid: "WAIT",
-    });
+    const payment = await databases.createDocument(
+      DATABASE_ID,
+      PAYMENT_ID,
+      ID.unique(),
+      {
+        coreId: existingDoc.documents[0].$id,
+        reference: data.id,
+        isPaid: "WAIT",
+      }
+    );
+
+    await databases.updateDocument(
+      DATABASE_ID,
+      CORE_ID,
+      existingDoc.documents[0].$id,
+      {
+        paymentId: payment.$id,
+      }
+    );
 
     return Response.json(data.link);
   } catch (error) {
