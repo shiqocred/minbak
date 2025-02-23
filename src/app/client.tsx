@@ -16,12 +16,16 @@ import {
 import {
   ArrowRight,
   Brain,
+  Briefcase,
   ChevronLeft,
   ChevronRight,
   CreditCardIcon,
+  GraduationCap,
   Loader,
+  Loader2,
   LockOpenIcon,
   Rocket,
+  Search,
   Sparkles,
   UserCheck2,
   XCircle,
@@ -48,6 +52,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Ripple } from "@/components/magicui/ripple";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { TypingAnimation } from "@/components/magicui/typing-animation";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -63,6 +70,7 @@ export const HomeClient = () => {
   const { theme } = useTheme();
   const router = useRouter();
   const notif = getCookie("notif");
+  const isMobile = useIsMobile();
 
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -274,10 +282,15 @@ export const HomeClient = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100vh", opacity: 0 }}
             transition={{ duration: 1 }}
-            className="w-full h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 flex items-center justify-center flex-col gap-8"
+            className="w-full h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 flex items-center justify-center flex-col gap-8 relative overflow-hidden"
           >
+            <Ripple
+              mainCircleSize={isMobile ? 200 : 300}
+              numCircles={isMobile ? 8 : 10}
+              mainCircleOpacity={isMobile ? 0.17 : 0.25}
+            />
             <Button
-              className="flex items-center gap-1 rounded-full h-auto py-1.5 bg-transparent dark:bg-transparent cursor-pointer disabled:opacity-100 disabled:cursor-default "
+              className="flex items-center gap-1 rounded-full h-auto py-1.5 bg-gray-50 dark:bg-gray-900 cursor-pointer disabled:opacity-100 disabled:cursor-default "
               variant={"outline"}
               disabled={!current.source}
               onClick={() => router.push("/?page=result")}
@@ -298,39 +311,47 @@ export const HomeClient = () => {
               )}
             </Button>
             <div className="flex items-center justify-center gap-4 flex-col">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-gray-500 to-gray-900 dark:from-white dark:to-gray-500 bg-clip-text text-transparent text-balance max-w-5xl text-center">
-                Kenali Dirimu, Pahami Potensimu
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold max-w-7xl bg-gradient-to-br from-gray-500 to-gray-900 dark:from-white dark:to-gray-500 bg-clip-text text-transparent text-center flex-col flex items-center justify-center md:flex-row md:gap-4">
+                <span className="h-[3rem] md:h-[4rem] lg:h-[7rem]">
+                  Temukan
+                </span>{" "}
+                <TypingAnimation
+                  words={["Minat Sejati", "Bakat Alami"]}
+                  typingSpeed={200}
+                  deleteSpeed={200}
+                  delayBetweenWords={2000}
+                />
               </h1>
               <p className="md:text-lg lg:text-xl text-center dark:text-gray-300">
-                Jawab pertanyaan sederhana & dapatkan insight mendalam tentang
-                dirimu!
+                Jawab pertanyaan sederhana & ketahui jalur karier yang paling
+                cocok untukmu!
               </p>
             </div>
             <div className="flex items-center justify-center gap-4 w-full flex-col md:flex-row">
               <MagicCard
-                className="dark:bg-gray-900 bg-gray-50 flex items-center justify-center gap-4 px-3 h-10 lg:h-12 rounded col-span-1 w-[323px] lg:w-full max-w-sm"
+                className="flex items-center justify-center gap-4 px-3 h-10 lg:h-12 rounded col-span-1 w-full max-w-sm"
                 gradientColor={theme === "dark" ? "#1f2937" : "#e5e7eb"}
               >
                 <WordRotate
-                  className="flex items-center justify-start gap-4  w-full"
-                  duration={3000}
+                  className="flex items-center justify-start gap-4 w-full"
+                  duration={5000}
                   words={[
                     <>
-                      <UserCheck2 className="size-5 flex-none" />
+                      <Search className="size-5 flex-none" />
                       <p className="font-medium text-sm lg:text-base">
-                        Jujur dan temukan kepribadian Anda
+                        Kenali bakat terpendammu
                       </p>
                     </>,
                     <>
-                      <Brain className="size-5 flex-none" />
+                      <Briefcase className="size-5 flex-none" />
                       <p className="font-medium text-sm lg:text-base">
-                        Pahami dampak kepribadian Anda
+                        Pahami pilihan karier yang sesuai
                       </p>
                     </>,
                     <>
-                      <Rocket className="size-5 flex-none" />
+                      <GraduationCap className="size-5 flex-none" />
                       <p className="font-medium text-sm lg:text-base">
-                        Tumbuh dengan materi premium
+                        Asah potensimu dengan wawasan baru
                       </p>
                     </>,
                   ]}
@@ -415,18 +436,18 @@ export const HomeClient = () => {
                               "w-14 aspect-square h-auto ",
                             (i === 0 || i === 3) &&
                               "w-16 aspect-square h-auto text-lg",
-                            soalAcak[posSoal].score - 1 === i &&
+                            soalAcak[posSoal].score === 1 &&
                               i === 0 &&
                               " bg-red-500 dark:bg-red-500 text-white",
-                            soalAcak[posSoal].score - 1 === i &&
+                            soalAcak[posSoal].score === 2 &&
                               i === 1 &&
                               " bg-amber-500 dark:bg-amber-500 text-white",
-                            soalAcak[posSoal].score - 1 === i &&
+                            soalAcak[posSoal].score === 4 &&
                               i === 2 &&
                               "bg-lime-500 dark:bg-lime-500 text-white",
-                            soalAcak[posSoal].score - 1 === i &&
+                            soalAcak[posSoal].score === 5 &&
                               i === 3 &&
-                              "bg-green-500 dark:border-green-500 text-white",
+                              "bg-green-500 dark:bg-green-500 text-white",
                             i === 0 &&
                               "border-red-500 hover:bg-red-500 dark:hover:text-gray-950 dark:hover:bg-red-500",
                             i === 1 &&
@@ -529,7 +550,7 @@ export const HomeClient = () => {
             className="w-full h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-center flex-col pt-8"
           >
             <div className="py-2 md:py-5 lg:py-0 h-full w-full relative">
-              <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
+              <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify prose-hr:border-gray-300 dark:prose-hr:border-gray-700 dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
                 <ReactMarkdown className={"w-full max-w-3xl mx-auto"}>
                   {current.isPaid !== "SUCCESS" || !current.data
                     ? responseExample
@@ -544,19 +565,135 @@ export const HomeClient = () => {
                   </div>
                 </div>
               )}
-              {current && current.isPaid !== "SUCCESS" && (
+              {current &&
+                current.isPaid !== "SUCCESS" &&
+                current.isPaid !== "WAIT" && (
+                  <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
+                    {!isPayment ? (
+                      <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                        <p className="font-semibold text-center">
+                          Dapatkan hasilnya dengan membayar <br />
+                          Rp. 9.000
+                        </p>
+                        <Button
+                          className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
+                          onClick={() => setIsPayment(true)}
+                        >
+                          <LockOpenIcon />
+                          Dapatkan Akses
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="w-full max-w-sm overflow-hidden  relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
+                        <Form {...form}>
+                          <form
+                            onSubmit={form.handleSubmit(mutatePay)}
+                            className="flex items-center justify-center flex-col gap-4 w-full"
+                          >
+                            <h5 className="font-semibold text-center">
+                              Masukan Data Diri Anda
+                            </h5>
+                            <FormField
+                              control={form.control}
+                              name="name"
+                              render={({ field }) => (
+                                <FormItem className="w-full">
+                                  <FormLabel>Nama</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="Jhon Doe" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem className="w-full">
+                                  <FormLabel>Email</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="email"
+                                      placeholder="example@mail.com"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="number"
+                              render={({ field }) => (
+                                <FormItem className="w-full">
+                                  <FormLabel>Phone</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      placeholder="088888888888"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div className="flex w-full items-center gap-2">
+                              <Button
+                                className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
+                                type="button"
+                                variant={"outline"}
+                                onClick={() => setIsPayment(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
+                                type="submit"
+                              >
+                                <CreditCardIcon />
+                                Lanjutkan Pembayaran
+                              </Button>
+                            </div>
+                          </form>
+                        </Form>
+                        {isPaymentProcess && (
+                          <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
+                            <Loader className="size-4 animate-spin" />
+                            Sedang di proses
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              {current && current.isPaid === "WAIT" && (
                 <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
                   {!isPayment ? (
                     <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                      <p className="font-semibold text-center">
-                        Dapatkan hasilnya dengan membayar Rp. 10.000
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="size-4 animate-spin" />
+                        <p className="font-semibold text-center">
+                          Menunggu pembayaran
+                        </p>
+                      </div>
+                      <p className=" text-center">
+                        Cek email Anda untuk melanjutkan pembayaran
                       </p>
+                      <div className="bg-gray-800 w-full h-px" />
+                      <p className="font-semibold text-center">
+                        Sudah bayar? Refresh halaman untuk memperbarui status
+                        pembayaran
+                      </p>
+                      <p>atau</p>
                       <Button
                         className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
                         onClick={() => setIsPayment(true)}
                       >
                         <LockOpenIcon />
-                        Dapatkan Akses
+                        Dapatkan Akses Ulang
                       </Button>
                     </div>
                   ) : (

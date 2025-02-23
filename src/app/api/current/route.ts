@@ -4,6 +4,7 @@ import { generateToken } from "@/lib/utils";
 import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
 import { ID, Query } from "node-appwrite";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const GET = async () => {
   const cookie = await cookies();
@@ -83,6 +84,7 @@ export const GET = async () => {
 
     await databases.createDocument(DATABASE_ID, CORE_ID, ID.unique(), {
       sessionId: token,
+      isPaid: null,
       source: null,
       response: null,
       paymentId: null,
@@ -112,7 +114,7 @@ export const GET = async () => {
       delNotif();
     }
     return Response.json({
-      message: "Welcome again.",
+      message: "Welcome again. 1",
       isPaid: null,
       status: true,
       source: false,
@@ -125,7 +127,7 @@ export const GET = async () => {
       delNotif();
     }
     return Response.json({
-      message: "Welcome again.",
+      message: "Welcome again. 2",
       isPaid: null,
       status: true,
       source: true,
@@ -144,7 +146,7 @@ export const GET = async () => {
       delNotif();
     }
     return Response.json({
-      message: "Welcome again.",
+      message: "Welcome again. 3",
       isPaid: null,
       status: true,
       source: true,
@@ -157,8 +159,8 @@ export const GET = async () => {
       setNotif("01");
     }
     return Response.json({
-      message: "Welcome again.",
-      isPaid: docFound.isPaid,
+      message: "Welcome again. 4",
+      isPaid: payment.isPaid,
       status: true,
       source: true,
       data: null,
@@ -167,79 +169,92 @@ export const GET = async () => {
 
   if (!docFound.response && payment.isPaid === "SUCCESS") {
     const finalPrompt = `${docFound.source}
-    Kamu adalah analis kepribadian berbasis AI yang cerdas dan naratif. Berdasarkan jawaban user dalam skala 1-5, berikan analisis kepribadian yang menarik, informatif, dan engaging berdasarkan **MBTI, DISC, dan Big Five Personality**.
-    Buat output dalam bentuk **cerita yang menyenangkan** dengan struktur berikut:
-    1. **Pembukaan yang personal & menarik**
-    2. **Berikan analogi binatang yang sesuai dengan kepribadian mereka (contoh: Kamu seperti Elang karena…)**
-    3. **Analisis MBTI user dengan penjelasan yang engaging**
-    4. **Analisis DISC dan bagaimana mereka bekerja dalam tim**
-    5. **Analisis Big Five Personality dengan insight mendalam**
-    6. **Kesimpulan yang positif & ajakan refleksi**
-    Gunakan bahasa santai, menghibur, tetapi tetap profesional. Jawaban harus dalam bahasa Indonesia. buatkan dalam bentuk markdown saja!. jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru!
+    Kamu adalah AI asesmen minat dan bakat. Pengguna akan menjawab serangkaian pertanyaan berbasis skala Likert (1-5) untuk mengukur kecenderungan minat dan keterampilan mereka. Berdasarkan jawaban mereka, berikan analisis menyeluruh mengenai:
+    - Minat & Bakat – Identifikasi kecenderungan minat dan bakat pengguna.
+    - Saran Pendidikan – Rekomendasi jurusan S1 & S2 yang sesuai.
+    - Universitas di Indonesia – Kampus yang menawarkan jurusan yang relevan.
+    - Rekomendasi Karier – Pekerjaan yang cocok dengan estimasi gaji di Indonesia.
+    Instruksi untuk AI:
+    - Analisis jawaban pengguna berdasarkan pola skor mereka.
+    - Kelompokkan hasil ke dalam bidang yang sesuai (misalnya: analitis, kreatif, sosial, teknis, manajerial, dsb.).
+    - Cocokkan bidang tersebut dengan jurusan S1 dan S2 yang relevan.
+    - Berikan rekomendasi universitas di Indonesia yang memiliki program S1 dan S2 terbaik dalam bidang tersebut.
+    - Berikan daftar pekerjaan yang cocok berdasarkan minat dan bakat yang terdeteksi.
+    - Sertakan estimasi gaji rata-rata di Indonesia untuk setiap pekerjaan yang direkomendasikan.
+    Gunakan bahasa santai, menghibur, tetapi tetap profesional. Jawaban harus dalam bahasa Indonesia. buatkan dalam bentuk markdown saja!. jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru! ngga usah make 2 bintang (**) diakhir! nama role tidak boleh ada diresponse kecuali sudah diartikan menjadi bahasa indonesia yang baik!
 
-    contohnya seperti ini
-    # 🐺 Sang Serigala Pemimpin: Kepribadian yang Visioner dan Adaptif 🐺
+    contohnya seperti ini:
+    ## Analisis Minat & Bakat
+    Berdasarkan jawaban dengan skor **4 pada semua pertanyaan**, kamu menunjukkan kecenderungan minat dan bakat yang cukup merata di berbagai bidang. Ini mengindikasikan bahwa kamu memiliki kemampuan yang seimbang dalam **analitis, kreatif, sosial, teknis, dan manajerial.**
 
-    Di sebuah hutan yang luas, ada seekor serigala yang tidak hanya kuat, tetapi juga cerdas dan penuh strategi. Ia adalah pemimpin alami, selalu memimpin kelompoknya dengan ketegasan, tetapi tetap peka terhadap perasaan sesama. Serigala ini bukan hanya berani mengambil risiko, tetapi juga berpikir jauh ke depan, merencanakan setiap langkah dengan hati-hati. Dan tahukah kamu? **Serigala itu adalah kamu!** 🐺✨
+    1. **Analitis & Logika** – Kamu memiliki minat dalam pemecahan masalah, analisis data, dan berpikir kritis.
+    2. **Kreativitas & Inovasi** – Kamu tertarik dalam menulis, menghasilkan ide, dan bekerja dengan tangan.
+    3. **Sosial & Komunikasi** – Kamu nyaman berbicara di depan umum, menyelesaikan konflik, dan membantu orang lain.
+    4. **Teknis & Digital** – Kamu percaya diri dalam menggunakan teknologi dan memahami cara kerja mesin.
+    5. **Manajerial & Kepemimpinan** – Kamu menikmati mengatur proyek dan bekerja dalam tim.
 
-    ## 🌟 Kepribadianmu dalam MBTI: Sang Visioner yang Tertata 🌟
-    Dari hasil analisis, kamu kemungkinan besar berada dalam spektrum **ENTJ atau INTJ**—seorang pemikir strategis yang suka merencanakan, berpikir logis, dan tetap fokus pada tujuan.
-
-    🔹 **Pemimpin Alami** – Kamu nyaman mengambil peran sebagai pemimpin dalam kelompok. Tidak heran, karena kamu memang suka memastikan segala sesuatunya berjalan sesuai rencana.  
-    🔹 **Perencana Ulung** – Kamu bukan tipe yang suka spontanitas berlebihan. Segala sesuatu lebih nyaman jika sudah ada jadwal dan struktur yang jelas.  
-    🔹 **Logis & Objektif** – Dalam menghadapi masalah, kamu mengandalkan logika, bukan perasaan. Kamu mampu mengambil keputusan yang rasional tanpa terbawa emosi.  
-
-    Namun, karena kamu juga memiliki sisi adaptif, ada kemungkinan kamu bisa berubah strategi saat situasi menuntut. Kamu bukan tipe yang kaku, tetapi tetap memiliki prinsip yang kuat!
-
-    ---
-
-    ## 💼 DISC: Sang Dominan yang Tetap Peduli 💼
-    Dalam dunia kerja atau tim, kamu memiliki kombinasi **Dominance (D) dan Conscientiousness (C)**.
-
-    🔥 **D (Dominance) – Pemimpin dan Pengambil Keputusan**  
-    Kamu memiliki jiwa kepemimpinan yang tinggi dan tidak ragu mengambil keputusan besar. Jika ada tantangan, kamu lebih suka menghadapi daripada menghindari.
-
-    🎯 **C (Conscientiousness) – Detail dan Perfeksionis**  
-    Di sisi lain, kamu juga seorang yang sangat memperhatikan detail dan ketepatan. Kamu tidak hanya memimpin dengan visi besar, tetapi juga memastikan eksekusi berjalan dengan rapi dan terstruktur.
-
-    Namun, meskipun kamu adalah pemimpin alami, terkadang tim bisa merasa kamu terlalu serius atau terlalu fokus pada hasil. Tantangannya? Jangan lupa memberi apresiasi kepada orang-orang di sekitarmu!
+    Dengan profil yang luas ini, kamu bisa mengeksplorasi berbagai jalur pendidikan dan karier yang fleksibel.
 
     ---
 
-    ## 🧠 Big Five Personality: Keseimbangan yang Kuat 🧠
-    Jika kita melihat kepribadianmu berdasarkan **Big Five Personality**, kamu memiliki keseimbangan yang cukup menarik:
+    ## Rekomendasi Pendidikan
+    ### S1 (Sarjana)
+    Berdasarkan minat dan bakatmu, berikut beberapa jurusan yang sesuai:
 
-    ✔ **Extraversion (4/5)** – Kamu menikmati berada di antara banyak orang, tetapi tetap bisa menghargai waktu sendiri. Ini membuatmu fleksibel dalam berbagai situasi sosial.  
-    ✔ **Conscientiousness (4/5)** – Kedisiplinan dan keteraturan adalah kekuatan utamamu. Kamu bukan tipe yang suka hidup berantakan.  
-    ✔ **Openness to Experience (4/5)** – Meskipun kamu suka perencanaan, kamu juga punya sisi kreatif dan senang mengeksplorasi ide-ide baru.  
-    ✔ **Agreeableness (4/5)** – Kamu senang membantu orang lain dan memiliki empati yang cukup tinggi. Namun, kamu tetap bisa bersikap tegas saat dibutuhkan.  
-    ✔ **Neuroticism (1/5)** – Kamu tetap tenang dalam tekanan dan tidak mudah panik. Ini membuatmu menjadi orang yang bisa diandalkan dalam situasi sulit.
+    - **Manajemen atau Administrasi Bisnis** → Cocok dengan minat manajerial dan kepemimpinan.
+    - **Psikologi** → Sesuai dengan ketertarikan dalam membantu orang lain dan menyelesaikan konflik.
+    - **Teknik Informatika / Ilmu Komputer** → Mendukung minatmu dalam teknologi dan analisis data.
+    - **Statistika atau Data Science** → Sesuai dengan kemampuan analitis dan ketelitianmu.
+    - **Ilmu Komunikasi** → Cocok dengan bakatmu dalam berbicara di depan umum dan menulis.
+    
+    ### S2 (Magister)
+    Jika ingin melanjutkan S2, beberapa pilihan yang relevan:
+
+    - **MBA (Master of Business Administration)** – Jika ingin mendalami manajerial & kepemimpinan.
+    - **Magister Psikologi** – Jika tertarik pada interaksi sosial dan penyelesaian konflik.
+    - **Magister Data Science / Big Data Analytics** – Jika ingin fokus pada analisis data dan teknologi.
+    - **Magister Ilmu Komunikasi** – Untuk mengembangkan keterampilan komunikasi dan media.
 
     ---
 
-    ## 🌟 Kesimpulan: Pemimpin Adaptif dengan Visi Kuat 🌟
-    Kamu seperti **serigala pemimpin**—kuat, cerdas, dan visioner. Kamu memiliki keseimbangan antara logika dan empati, perencanaan dan fleksibilitas. Dalam tim, kamu akan bersinar sebagai pemimpin yang tidak hanya strategis, tetapi juga tetap memperhatikan orang-orang di sekitarmu.
+    ## Rekomendasi Universitas di Indonesia
+    Beberapa universitas terbaik untuk jurusan yang sesuai:
 
-    Namun, tantangan bagi orang sepertimu adalah **belajar untuk lebih menikmati momen dan tidak selalu harus perfeksionis**. Dunia tidak selalu bisa diprediksi, dan terkadang spontanitas bisa membawa hal-hal luar biasa dalam hidupmu.
+    - **Manajemen / Bisnis:** UI, UGM, ITB, BINUS
+    - **Psikologi:** UI, UGM, Unpad
+    - **Teknik Informatika / Ilmu Komputer:** ITB, BINUS, UI
+    - **Statistika / Data Science:** ITS, IPB, UI
+    - **Ilmu Komunikasi:** UI, UGM, Unair
 
-    Jadi, pertanyaannya: **Apa langkah besar yang akan kamu ambil selanjutnya? 🚀**
+    ---
+
+    ## Rekomendasi Karier & Estimasi Gaji di Indonesia
+    Berdasarkan minat dan bakat yang terdeteksi, berikut beberapa profesi yang cocok untukmu:
+
+    1. **Product Manager** (Rp15 - 40 juta/bulan): Cocok jika ingin peran manajerial, analitis, dan teknis.
+    2. **Data Analyst / Data Scientist** (Rp10 - 35 juta/bulan): Menggunakan keterampilan analisis data dan logika.
+    3. **Digital Marketing Specialist** (Rp8 - 25 juta/bulan): Memanfaatkan kemampuan komunikasi dan kreativitas.
+    4. **HR / Talent Development Specialist** (Rp8 - 20 juta/bulan): Mengembangkan keterampilan interpersonal dan kepemimpinan.
+    5. **Management Consultant** (Rp15 - 35 juta/bulan): Cocok dengan minat dalam strategi bisnis dan pemecahan masalah.
+    6. **Software Engineer / IT Specialist** (Rp10 - 30 juta/bulan): Jika ingin fokus pada teknologi dan pemrograman.
+    7. **Content Creator / Writer** (Rp5 - 20 juta/bulan): Jika ingin mengembangkan bakat menulis dan komunikasi.
+
+    Karena kamu memiliki **minat yang serba luas**, kamu bisa memilih jalur karier yang fleksibel dan berkembang ke berbagai industri.
+
+    Apakah ada jalur tertentu yang lebih ingin kamu eksplorasi lebih lanjut? 🚀
     `;
-    const anthropic = new Anthropic({
-      apiKey: process.env.PUBLIC_NEXT_KEY_CLAUDE!, // defaults to process.env["ANTHROPIC_API_KEY"]
-    });
 
-    const msg = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 1024,
-      messages: [{ role: "user", content: finalPrompt }],
-    });
+    const genAI = new GoogleGenerativeAI(process.env.PUBLIC_NEXT_KEY_GEMINI!);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+    const result = await model.generateContent(finalPrompt);
 
     const updatedDoc = await databases.updateDocument(
       DATABASE_ID,
       CORE_ID,
       docFound.$id,
       {
-        response: (msg.content[0] as Anthropic.TextBlock).text ?? "",
+        response: result.response.text(),
       }
     );
 
@@ -252,7 +267,7 @@ export const GET = async () => {
     setNotif("00");
 
     return Response.json({
-      message: "Welcome again.",
+      message: "Welcome again. 5",
       isPaid: paymentUpdate.isPaid,
       status: true,
       source: true,
@@ -261,7 +276,7 @@ export const GET = async () => {
   }
 
   return Response.json({
-    message: "Welcome again",
+    message: "Welcome again 6",
     isPaid: payment.isPaid,
     status: true,
     source: true,

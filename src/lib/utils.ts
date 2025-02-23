@@ -7,70 +7,92 @@ export function cn(...inputs: ClassValue[]) {
 
 const soalKepribadian = [
   {
-    question: "Saya tetap tenang meskipun dalam situasi sulit",
-    role: "emotional_stability",
+    question: "Saya suka memecahkan teka-teki dan masalah logika.",
+    role: "logical_reasoning",
   },
   {
-    question: "Saya memperhatikan hal-hal kecil saat mengerjakan sesuatu",
+    question:
+      "Saya suka bekerja dengan tangan untuk membuat sesuatu (misalnya, seni, kerajinan).",
+    role: "hands_on_creativity",
+  },
+  {
+    question: "Saya tertarik memahami cara mesin dan teknologi bekerja.",
+    role: "mechanical_interest",
+  },
+  {
+    question:
+      "Saya suka membantu orang lain menyelesaikan masalah pribadi atau emosional.",
+    role: "emotional_support",
+  },
+  {
+    question: "Saya lebih suka bekerja dalam tim daripada sendirian.",
+    role: "teamwork",
+  },
+  {
+    question: "Saya merasa puas saat mengatur acara atau mengelola proyek.",
+    role: "organizational_skills",
+  },
+  {
+    question: "Saya tertarik pada penemuan ilmiah dan eksperimen.",
+    role: "scientific_inquiry",
+  },
+  {
+    question: "Saya suka menulis cerita, puisi, atau esai.",
+    role: "writing",
+  },
+  {
+    question: "Saya merasa nyaman berbicara di depan banyak orang.",
+    role: "public_speaking",
+  },
+  {
+    question:
+      "Saya tertarik pada pekerjaan yang melibatkan perjalanan atau menjelajahi tempat baru.",
+    role: "adventure_seeking",
+  },
+  {
+    question: "Saya bisa dengan cepat menganalisis data dan menemukan pola.",
+    role: "data_analysis",
+  },
+  {
+    question: "Saya pandai menghasilkan ide kreatif atau solusi.",
+    role: "creative_thinking",
+  },
+  {
+    question: "Saya mahir menjelaskan konsep sulit kepada orang lain.",
+    role: "teaching",
+  },
+  {
+    question: "Saya bisa tetap tenang dan fokus dalam situasi sulit.",
+    role: "emotional_resilience",
+  },
+  {
+    question: "Saya sangat teliti saat menyelesaikan tugas.",
     role: "attention_to_detail",
   },
   {
     question:
-      "Saya cenderung melihat sisi positif dari situasi, meskipun ada masalah",
-    role: "optimism",
+      "Saya suka belajar bahasa baru atau meningkatkan kemampuan komunikasi saya.",
+    role: "language_learning",
+  },
+  {
+    question: "Saya percaya diri menggunakan komputer dan alat digital.",
+    role: "technology_proficiency",
   },
   {
     question:
-      "Saya cepat menyesuaikan diri jika ada perubahan rencana atau situasi tak terduga",
+      "Saya bisa dengan mudah beradaptasi dengan perubahan rencana atau situasi tak terduga.",
     role: "adaptability",
   },
   {
-    question: "Saya nyaman jika segala sesuatunya teratur dan bisa diprediksi",
-    role: "structure_preference",
-  },
-  {
-    question: "Saya suka berada di tempat ramai bersama banyak orang",
-    role: "social_orientation",
+    question: "Saya mahir menyelesaikan konflik antar orang.",
+    role: "conflict_resolution",
   },
   {
     question:
-      "Saya merasa senang ketika bisa membantu orang lain atau membuat hidup mereka lebih mudah",
-    role: "altruism",
-  },
-  {
-    question: "Saya suka menganalisis data atau memecahkan masalah yang rumit",
-    role: "analytical_thinking",
-  },
-  {
-    question: "Saya suka merencanakan hari saya dari awal dan mengikuti jadwal",
-    role: "planning",
-  },
-  {
-    question:
-      "Saat menghadapi masalah, saya lebih menggunakan logika daripada perasaan",
-    role: "decision_making",
-  },
-  {
-    question:
-      "Saya tidak takut mengambil risiko jika itu bisa membantu saya mencapai sesuatu yang penting",
-    role: "risk_taking",
-  },
-  {
-    question: "Saya biasanya memimpin saat berada dalam kelompok",
-    role: "leadership",
-  },
-  { question: "Saya mudah memahami perasaan orang lain", role: "empathy" },
-  {
-    question: "Saya suka mencari ide-ide baru dan berpikir kreatif",
-    role: "creativity",
-  },
-  {
-    question:
-      "Saya merasa berenergi setelah menghabiskan waktu sendirian atau di tempat yang tenang",
-    role: "introversion_recharge",
+      "Saya suka bekerja pada proyek jangka panjang yang membutuhkan ketekunan.",
+    role: "perseverance",
   },
 ];
-
 export type ConvertedData = {
   question: string;
   role: string;
@@ -122,68 +144,56 @@ export const generateToken = (length: number = 16): string => {
   return token;
 };
 
-export const responseExample = `# 🌟 Alsa Safadsads sdjsnfiecn
+export const responseExample = `## Analisis Minat & Bakat **  
 
-Hai btoas! Syaa sduha msailani ajwanab-mu dan wow... lifpor ankiprabedimu sungghu menari! Mari kita jeahjali sbamrea siap dirimu nyaabersa.
+Wah, berdasarkan jawabanmu, kamu ini **multipotensial** banget! Skor kamu tinggi di banyak bidang, menunjukkan minat dan bakatmu tersebar merata. Keren! Ini artinya kamu punya potensi besar untuk sukses di berbagai jalur karier. Yuk, kita bedah satu per satu! **  
 
-## 🦊 Huweq Lopasnd: Fhuie Cserdk
+1. **Logika & Analisis**: Skor tinggi di *logical reasoning* dan *data analysis* nunjukin kamu jago memecahkan masalah dan menganalisis informasi. Otakmu encer banget nih! **  
+2. **Kreativitas & Inovasi**: Skor tinggi di *hands-on creativity* dan *creative thinking* berarti kamu punya imajinasi yang kaya dan suka menciptakan sesuatu yang baru. Jiwa seniman dalam dirimu kuat! **  
+3. **Sosial & Empati**: Skor tinggi di *emotional support* dan *conflict resolution* menandakan kamu peduli pada orang lain dan punya kemampuan komunikasi yang baik. Kamu bisa jadi pendengar yang baik dan penengah yang handal. **  
+4. **Organisasi & Manajemen**: Skor tinggi di *organizational skills* dan *attention to detail* menunjukkan kamu teratur, teliti, dan bisa diandalkan. Kamu cocok banget jadi pemimpin atau manajer. **  
+5. **Teknologi & Pembelajaran**: Skor tinggi di *technology proficiency* dan *language learning* berarti kamu cepat belajar dan tertarik pada hal-hal baru, terutama yang berkaitan dengan teknologi. **  
 
-Kamu makgratinmu pada seekor buhar – crdeas, tapfida, dan pnuhe isgrate! Seripte rubha yang maumpu naysuamak diri di bragaei hatibat, kamu juga miluepki ukamabna labusia dalam batpad di suitasa baru. Kombansai antara tcekidkan, litetiakn, dan upamkenan solsimu mebuat kamu sitpere bahur yang bisa rablise di rgabeai sustaia.
+## Rekomendasi Pendidikan **  
 
-## 📊 MNSK Dsjfbwu: ENJW "Coimasdfn Snwa"
+Dengan minat dan bakat yang beragam ini, kamu punya banyak pilihan menarik untuk kuliah! **  
 
-Dari pola jwbaanmu, terlirat lejas bahaw kamu mipiluke prefenarsie:
-- **Extraversion (E)**: Kamu randemgi dari nasteroik soslai dan myukiai tmpate rmaai
-- **Intuition (N)**: Tivarakite dan ide-ide baru adalah umankaoih sariara
-- **Thinking (T)**: Kamu beilh raniglamada goiak dalam mengiabale tesakuan
-- **Judging (J)**: Kamu yikanmu teruarat dan plrenaaan maagn
+### S1 (Sarjana) **  
 
-Seabai ENTJ, kamu adalah plemireap natural dengan vasi yang lejas. Kamu miluipke akombanis unik antara akamupen srgistate dan dagnona untuk hamcapai haisl.
+- **Informatika/Ilmu Komputer**: Cocok buat kamu yang suka logika, analisis data, dan teknologi. **  
+- **Psikologi**: Pas buat kamu yang peduli pada orang lain dan tertarik memahami perilaku manusia. **  
+- **Manajemen/Administrasi Bisnis**: Tepat buat kamu yang punya jiwa kepemimpinan dan ingin belajar tentang bisnis. **  
+- **Desain Komunikasi Visual (DKV)**: Cocok buat kamu yang kreatif dan suka визуальное. **  
+- **Statistika**: Buat kamu yang teliti dan suka menganalisis data. **  
 
-## 💫 DSCX Wpoeqn: Domincane-Influance
+### S2 (Magister) **  
 
-Dalam kseton DISC, fiprulo memjokani kobanmsia kuat antara:
-- **Dominance**: Barnei mnegabil roisk dan nimelpi
-- **Influence**: Pasukamen sosial yang baik dan dapat maunpegrin orang lain
+- **Magister Informatika**: Untuk memperdalam ilmu komputer dan teknologi. **  
+- **Magister Psikologi**: Jika ingin fokus pada konseling atau psikologi industri. **  
+- **MBA (Master of Business Administration)**: Buat kamu yang ingin jadi pemimpin bisnis handal. **  
+- **Magister Desain**: Untuk mengembangkan kemampuan desainmu lebih lanjut. **  
 
-Dalam mit, kamu adalah maipen yang:
-- Mampu melgnaban dialken saat plidurekan
-- Bisa mtivaois atngoga tim
-- Psuofo pada lasih sambil tetap mkaeiranphti dinmakia tim
-- Nembawa iergenii poisift dalam kpolemok
+## Rekomendasi Universitas di Indonesia **  
 
-## 🎯 Pweqnj Nxfoipw
+- **UI (Universitas Indonesia)**: Pilihan tepat untuk semua jurusan, terutama Psikologi, Informatika, dan Manajemen. **  
+- **ITB (Institut Teknologi Bandung)**: Jagoan untuk Informatika, Desain, dan jurusan teknik lainnya. **  
+- **UGM (Universitas Gadjah Mada)**: Unggul dalam Psikologi, Manajemen, dan Statistika. **  
+- **BINUS (Bina Nusantara University)**: Terbaik untuk Informatika, Desain, dan Bisnis. **  
 
-1. **Openness**: Tinggi
-   - Snagat terbueka hadaitap ide baru
-   - Riaetavik dan favioinni dalam pecahapem msaalah
+## Rekomendasi Karier & Estimasi Gaji di Indonesia **  
 
-2. **Conscientiousness**: Sangat Tinggi
-   - Rorganties dan littei
-   - Suiyakam plnarecaan dan reaturat
+Kamu punya banyak pilihan karier yang menjanjikan, nih! **  
 
-3. **Extraversion**: Tinggi
-   - Kgniree dalam sitausi sosial
-   - Mampu bnguuma hubgnuan dengan dauhm
+1. **UI/UX Designer** (Rp8 - 25 juta/bulan): Menggabungkan kemampuan desain, logika, dan pemahaman tentang user experience. **  
+2. **Data Scientist** (Rp10 - 35 juta/bulan): Mengolah data dan memberikan insight berharga untuk perusahaan. **  
+3. **Software Engineer** (Rp10 - 30 juta/bulan): Menciptakan aplikasi dan sistem yang memudahkan hidup banyak orang. **  
+4. **Konsultan Manajemen** (Rp15 - 35 juta/bulan): Membantu perusahaan memecahkan masalah dan meningkatkan kinerja. **  
+5. **Psikolog** (Rp8 - 20 juta/bulan): Membantu orang lain mengatasi masalah emosional dan mental. **  
+6. **Product Manager** (Rp15 - 40 juta/bulan): Bertanggung jawab atas pengembangan produk dari ide hingga peluncuran. **  
 
-4. **Agreeableness**: Tinggi
-   - Epatik dan pdeliu gararep orang lain
-   - Nasgen bunmtea dan tkirbous
+## Kesimpulan **  
 
-5. **Neuroticism**: Renadh
-   - Sitabl acasro eomasnil
-   - Mampu mngeola sserts dengan kbia
+Kamu punya potensi besar untuk sukses di bidang apapun yang kamu pilih. Jangan takut untuk mencoba hal-hal baru dan mengikuti kata hatimu. Ingat, yang penting adalah **passion** dan **kerja keras**. Selamat berpetualang di dunia pendidikan dan karier! **  
 
-## ✨ Wpeqncxz & Rlefiksi
-
-Bidrakinapemu adalah perpaduna unik antara malekniapn yang kuat dan paekesaan sosial yang ginti. Kamu miluipke seponti besar untuk minjadi pemrileap yang stiarnafolim – soenasoerg yang tidka hyana smapahi hasil, tapi juga miapsrien orang lain.
-
-Pasrayten untuk rasilkefi:
-- Bagaimana kamu bisa mgakanun teukaat paditafmu untuk iacmaphe tujan lebih besar?
-- Apakah ada area di mana kamu ingin pkabgeen diruh lebih jauh?
-
-Remeirb: Bidrapinakemu adalah metasum yang paling bhaegrba. Gunakan tmuekaatmu dengan jbai, dan tetap buka diri untuk terus bekraevang! 🌱
-
----
-
-Sudah cukup acak seperti yang kamu inginkan? 😆`;
+Gimana? Apakah ada bidang tertentu yang ingin kamu gali lebih dalam? Atau mungkin ada pertanyaan lain yang ingin kamu tanyakan? Jangan ragu untuk bertanya, ya!  **  
+`;

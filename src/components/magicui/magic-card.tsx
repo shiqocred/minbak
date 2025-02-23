@@ -76,7 +76,10 @@ export const MagicCard = ({
   return (
     <div
       ref={cardRef}
-      className={cn("group relative flex size-full rounded-full", className)}
+      className={cn(
+        "group relative flex size-full rounded-full overflow-hidden",
+        className
+      )}
     >
       <div className="absolute inset-px z-10 rounded-full bg-gray-50 dark:bg-gray-900" />
       <div className="relative z-30 flex items-center justify-center gap-4 px-3 w-full truncate">

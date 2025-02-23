@@ -17,8 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tes Kepribadian",
-  description: "Kenali Dirimu, Pahami Potensimu",
+  title: "Tes Minat & Bakat Online – Temukan Potensimu!",
+  description:
+    "Cari tahu minat dan bakatmu dengan tes online cepat dan akurat.",
 };
 
 export default function RootLayout({
