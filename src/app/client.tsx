@@ -18,7 +18,6 @@ import {
   Briefcase,
   ChevronLeft,
   ChevronRight,
-  CreditCardIcon,
   GraduationCap,
   Loader,
   Loader2,
@@ -33,7 +32,6 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
@@ -41,14 +39,6 @@ import { deleteCookie, getCookie } from "cookies-next/client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Ripple } from "@/components/magicui/ripple";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
@@ -73,7 +63,6 @@ export const HomeClient = () => {
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPayment, setIsPayment] = useState(false);
   const [isSend, setIsSend] = useState(false);
   const [isPaymentProcess, setIsPaymentProcess] = useState(false);
 
@@ -169,7 +158,6 @@ export const HomeClient = () => {
       const data = await msg.json();
 
       form.reset();
-      setIsPayment(false);
       router.push(data);
     } catch (error) {
       console.log("error", error);
