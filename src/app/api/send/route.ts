@@ -1,4 +1,4 @@
-import { CORE_ID, DATABASE_ID } from "@/config";
+import { CORE_ID, DATABASE_ID, PAYMENT_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
 import { Query } from "node-appwrite";
@@ -18,6 +18,8 @@ export const POST = async (req: Request) => {
     Query.equal("sessionId", sessionId.value),
   ]);
 
+  console.log(userDoc.documents[0]);
+
   if (userDoc.total === 0) {
     return new Response("Data not found.", { status: 404 });
   }
@@ -25,7 +27,7 @@ export const POST = async (req: Request) => {
   if (userDoc.documents[0].paymentId) {
     await databases.updateDocument(
       DATABASE_ID,
-      CORE_ID,
+      PAYMENT_ID,
       userDoc.documents[0].paymentId,
       {
         isPaid: "FALSE",

@@ -154,6 +154,8 @@ Wah, berdasarkan jawabanmu, kamu ini **multipotensial** banget! Skor kamu tinggi
 4. **Organisasi & Manajemen**: Skor tinggi di *organizational skills* dan *attention to detail* menunjukkan kamu teratur, teliti, dan bisa diandalkan. Kamu cocok banget jadi pemimpin atau manajer. **  
 5. **Teknologi & Pembelajaran**: Skor tinggi di *technology proficiency* dan *language learning* berarti kamu cepat belajar dan tertarik pada hal-hal baru, terutama yang berkaitan dengan teknologi. **  
 
+---
+
 ## Rekomendasi Pendidikan **  
 
 Dengan minat dan bakat yang beragam ini, kamu punya banyak pilihan menarik untuk kuliah! **  
@@ -173,12 +175,16 @@ Dengan minat dan bakat yang beragam ini, kamu punya banyak pilihan menarik untuk
 - **MBA (Master of Business Administration)**: Buat kamu yang ingin jadi pemimpin bisnis handal. **  
 - **Magister Desain**: Untuk mengembangkan kemampuan desainmu lebih lanjut. **  
 
+---
+
 ## Rekomendasi Universitas di Indonesia **  
 
 - **UI (Universitas Indonesia)**: Pilihan tepat untuk semua jurusan, terutama Psikologi, Informatika, dan Manajemen. **  
 - **ITB (Institut Teknologi Bandung)**: Jagoan untuk Informatika, Desain, dan jurusan teknik lainnya. **  
 - **UGM (Universitas Gadjah Mada)**: Unggul dalam Psikologi, Manajemen, dan Statistika. **  
 - **BINUS (Bina Nusantara University)**: Terbaik untuk Informatika, Desain, dan Bisnis. **  
+
+---
 
 ## Rekomendasi Karier & Estimasi Gaji di Indonesia **  
 
