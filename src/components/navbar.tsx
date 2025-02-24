@@ -72,7 +72,7 @@ export const Navbar = ({
             </Button>
           )}
           <Button asChild variant={"link"}>
-            <Link href={"/"}>Test Kepribadian</Link>
+            <Link href={"/"}>Test Minat & Bakat</Link>
           </Button>
           <Button asChild variant={"link"}>
             <Link href={"#"}>Hubungi Kami</Link>
@@ -121,7 +121,7 @@ export const Navbar = ({
               variant={"link"}
               onClick={() => setIsOpen(false)}
             >
-              <Link href={"/"}>Test Kepribadian</Link>
+              <Link href={"/"}>Test Minat & Bakat</Link>
             </Button>
             <Button
               className="h-10"

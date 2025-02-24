@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
@@ -150,7 +150,8 @@ export const HomeClient = () => {
     }
   };
 
-  const mutatePay = async (values: z.infer<typeof formSchema>) => {
+  const mutatePay = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsPaymentProcess(true);
     try {
       const msg = await fetch("/api/pay", {
@@ -159,7 +160,6 @@ export const HomeClient = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
       });
 
       if (!msg.ok) {
@@ -573,209 +573,18 @@ export const HomeClient = () => {
                 current.isPaid !== "SUCCESS" &&
                 current.isPaid !== "WAIT" && (
                   <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
-                    {!isPayment ? (
-                      <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                        <p className="font-semibold text-center">
-                          Dapatkan hasilnya dengan membayar <br />
-                          Rp. 9.000
-                        </p>
-                        <Button
-                          className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
-                          onClick={() => setIsPayment(true)}
-                        >
-                          <LockOpenIcon />
-                          Dapatkan Akses
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="w-full max-w-sm overflow-hidden  relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                        <Form {...form}>
-                          <form
-                            onSubmit={form.handleSubmit(mutatePay)}
-                            className="flex items-center justify-center flex-col gap-4 w-full"
-                          >
-                            <h5 className="font-semibold text-center">
-                              Masukan Data Diri Anda
-                            </h5>
-                            <FormField
-                              control={form.control}
-                              name="name"
-                              render={({ field }) => (
-                                <FormItem className="w-full">
-                                  <FormLabel>Nama</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="Jhon Doe" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="email"
-                              render={({ field }) => (
-                                <FormItem className="w-full">
-                                  <FormLabel>Email</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="email"
-                                      placeholder="example@mail.com"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="number"
-                              render={({ field }) => (
-                                <FormItem className="w-full">
-                                  <FormLabel>Phone</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      placeholder="088888888888"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <div className="flex w-full items-center gap-2">
-                              <Button
-                                className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
-                                type="button"
-                                variant={"outline"}
-                                onClick={() => setIsPayment(false)}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
-                                type="submit"
-                              >
-                                <CreditCardIcon />
-                                Lanjutkan Pembayaran
-                              </Button>
-                            </div>
-                          </form>
-                        </Form>
-                        {isPaymentProcess && (
-                          <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
-                            <Loader className="size-4 animate-spin" />
-                            Sedang di proses
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-              {current && current.isPaid === "WAIT" && (
-                <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
-                  {!isPayment ? (
-                    <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="size-4 animate-spin" />
-                        <p className="font-semibold text-center">
-                          Menunggu pembayaran
-                        </p>
-                      </div>
-                      <p className=" text-center">
-                        Cek email Anda untuk melanjutkan pembayaran
-                      </p>
-                      <div className="bg-gray-800 w-full h-px" />
+                    <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4 relative overflow-hidden">
                       <p className="font-semibold text-center">
-                        Sudah bayar? Refresh halaman untuk memperbarui status
-                        pembayaran
+                        Dapatkan hasilnya dengan membayar <br />
+                        Rp. 9.000
                       </p>
-                      <p>atau</p>
                       <Button
                         className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
-                        onClick={() => setIsPayment(true)}
+                        onClick={mutatePay}
                       >
                         <LockOpenIcon />
-                        Dapatkan Akses Ulang
+                        Dapatkan Akses
                       </Button>
-                    </div>
-                  ) : (
-                    <div className="w-full max-w-sm overflow-hidden  relative p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4">
-                      <Form {...form}>
-                        <form
-                          onSubmit={form.handleSubmit(mutatePay)}
-                          className="flex items-center justify-center flex-col gap-4 w-full"
-                        >
-                          <h5 className="font-semibold text-center">
-                            Masukan Data Diri Anda
-                          </h5>
-                          <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                              <FormItem className="w-full">
-                                <FormLabel>Nama</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Jhon Doe" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                              <FormItem className="w-full">
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="email"
-                                    placeholder="example@mail.com"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="number"
-                            render={({ field }) => (
-                              <FormItem className="w-full">
-                                <FormLabel>Phone</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="number"
-                                    placeholder="088888888888"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <div className="flex w-full items-center gap-2">
-                            <Button
-                              className="border-gray-900 hover:border-gray-800 dark:border-gray-900 hover:dark:border-gray-800 w-1/4 cursor-pointer bg-transparent dark:bg-transparent hover:bg-yellow-500 hover:dark:bg-yellow-500 hover:dark:text-black"
-                              type="button"
-                              variant={"outline"}
-                              onClick={() => setIsPayment(false)}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-900 hover:dark:bg-gray-800 w-3/4 cursor-pointer dark:text-white"
-                              type="submit"
-                            >
-                              <CreditCardIcon />
-                              Lanjutkan Pembayaran
-                            </Button>
-                          </div>
-                        </form>
-                      </Form>
                       {isPaymentProcess && (
                         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
                           <Loader className="size-4 animate-spin" />
@@ -783,7 +592,37 @@ export const HomeClient = () => {
                         </div>
                       )}
                     </div>
-                  )}
+                  </div>
+                )}
+              {current && current.isPaid === "WAIT" && (
+                <div className="absolute w-full h-full top-0 left-0 backdrop-blur-sm bg-gray-50/15 dark:bg-gray-900/15 flex items-center justify-center flex-col gap-4">
+                  <div className="w-full max-w-sm p-5 bg-yellow-400 rounded-lg shadow text-black dark:text-black flex items-center justify-center flex-col gap-4 relative overflow-hidden">
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="size-4 animate-spin" />
+                      <p className="font-semibold text-center">
+                        Menunggu pembayaran
+                      </p>
+                    </div>
+                    <div className="bg-gray-800 w-full h-px" />
+                    <p className="font-semibold text-center">
+                      Sudah bayar? Refresh halaman untuk memperbarui status
+                      pembayaran
+                    </p>
+                    <p>atau</p>
+                    <Button
+                      className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-50 hover:dark:bg-gray-50 w-full cursor-pointer"
+                      onClick={mutatePay}
+                    >
+                      <LockOpenIcon />
+                      Dapatkan Akses Ulang
+                    </Button>
+                    {isPaymentProcess && (
+                      <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center gap-2 bg-black/5 backdrop-blur-sm text-black">
+                        <Loader className="size-4 animate-spin" />
+                        Sedang di proses
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

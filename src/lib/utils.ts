@@ -144,62 +144,64 @@ export const generateToken = (length: number = 16): string => {
   return token;
 };
 
-export const responseExample = `## Analisis Minat & Bakat **  
+export const responseExample = `## nAlsisai iMnat & Bkaat  
 
-Wah, berdasarkan jawabanmu, kamu ini **multipotensial** banget! Skor kamu tinggi di banyak bidang, menunjukkan minat dan bakatmu tersebar merata. Keren! Ini artinya kamu punya potensi besar untuk sukses di berbagai jalur karier. Yuk, kita bedah satu per satu! **  
+haW, ndasebresk unjwbmaau, aumk ini **mpileiotnusat** gtenab! rSok aumk gtihni di bynaak bnida, menkunnjio aumitn dan btaukam trsaeeb rmatea. Kreen! Ini ariynta aumk unyap psoneit besar untku sskeus di bgaraei jlrue kera.ir uYk, kita bdhea satu pre satu!  
 
-1. **Logika & Analisis**: Skor tinggi di *logical reasoning* dan *data analysis* nunjukin kamu jago memecahkan masalah dan menganalisis informasi. Otakmu encer banget nih! **  
-2. **Kreativitas & Inovasi**: Skor tinggi di *hands-on creativity* dan *creative thinking* berarti kamu punya imajinasi yang kaya dan suka menciptakan sesuatu yang baru. Jiwa seniman dalam dirimu kuat! **  
-3. **Sosial & Empati**: Skor tinggi di *emotional support* dan *conflict resolution* menandakan kamu peduli pada orang lain dan punya kemampuan komunikasi yang baik. Kamu bisa jadi pendengar yang baik dan penengah yang handal. **  
-4. **Organisasi & Manajemen**: Skor tinggi di *organizational skills* dan *attention to detail* menunjukkan kamu teratur, teliti, dan bisa diandalkan. Kamu cocok banget jadi pemimpin atau manajer. **  
-5. **Teknologi & Pembelajaran**: Skor tinggi di *technology proficiency* dan *language learning* berarti kamu cepat belajar dan tertarik pada hal-hal baru, terutama yang berkaitan dengan teknologi. **  
-
----
-
-## Rekomendasi Pendidikan **  
-
-Dengan minat dan bakat yang beragam ini, kamu punya banyak pilihan menarik untuk kuliah! **  
-
-### S1 (Sarjana) **  
-
-- **Informatika/Ilmu Komputer**: Cocok buat kamu yang suka logika, analisis data, dan teknologi. **  
-- **Psikologi**: Pas buat kamu yang peduli pada orang lain dan tertarik memahami perilaku manusia. **  
-- **Manajemen/Administrasi Bisnis**: Tepat buat kamu yang punya jiwa kepemimpinan dan ingin belajar tentang bisnis. **  
-- **Desain Komunikasi Visual (DKV)**: Cocok buat kamu yang kreatif dan suka визуальное. **  
-- **Statistika**: Buat kamu yang teliti dan suka menganalisis data. **  
-
-### S2 (Magister) **  
-
-- **Magister Informatika**: Untuk memperdalam ilmu komputer dan teknologi. **  
-- **Magister Psikologi**: Jika ingin fokus pada konseling atau psikologi industri. **  
-- **MBA (Master of Business Administration)**: Buat kamu yang ingin jadi pemimpin bisnis handal. **  
-- **Magister Desain**: Untuk mengembangkan kemampuan desainmu lebih lanjut. **  
+1. **gLokia & iAsisnal**: Srok gtihni di *olacigl ernosgiin* dan *dtaa ianlyssai* nnujkinuo aumk gajo mamecepkh msalah dan aanislsai iianmrof.s Otakmu rnece bneagt nh!i  
+2. **Kritveaitas & oInvazi**: Sork htingi di *shdna-no ercvtiaeiy* dan *ciraetve hitnnki*g bniarte aumk upnya aiginamis yang akya dan ksu.a tMicpaaan ssuatu yang abru. Jwai sienamn dalam iurmdu kuat!  
+3. **Siolas & pEiamt**: Sork ithngi di *mltoieano uposrtp* dan *oincfclt iolutesrn* mangedani aumk plidue paa orang lain dan upnya kebauamnmk oainikmmous yang baik. amuk bsai jdii pnenegar yang diabk dan pnengah yang hdnal.a  
+4. **gOsaniarsi & nManagem**: roSk itnghi di *aitazornigol ssllik* dan *aotttinen to ldteai* mnounkkjea aumk trautr, iiettl, dan bsai nidakalean.d Kamu ccoko bagnte jdi pmeipnin atau maeanrj.  
+5. **Tneokilgo & nlPmeebajra**: Skor ithngi di *gocoyhtel pficineyrc* dan *guaagnl lnaering* mraeabtin aumk cpeat jabaelr dan tkretair paa ha-hal baur, rtamaeeta yang bertiakan dnegan tngeolkoi.  
 
 ---
 
-## Rekomendasi Universitas di Indonesia **  
+## dneeaidPkan sRemokindea  
 
-- **UI (Universitas Indonesia)**: Pilihan tepat untuk semua jurusan, terutama Psikologi, Informatika, dan Manajemen. **  
-- **ITB (Institut Teknologi Bandung)**: Jagoan untuk Informatika, Desain, dan jurusan teknik lainnya. **  
-- **UGM (Universitas Gadjah Mada)**: Unggul dalam Psikologi, Manajemen, dan Statistika. **  
-- **BINUS (Bina Nusantara University)**: Terbaik untuk Informatika, Desain, dan Bisnis. **  
+Dnegan mintna dan bktau yang baagrma ini, aumk nupya bnyaak piahlion menarik untku likauh!  
+
+### 1S (Sanjaar)  
+
+- **iomtkarfnai/uIm Klmepoort**: Ccoko buat aumk yang skua lgokai, aainslsi aadt, dan tecognholy.  
+- **Pogoikysil**: Pas buat aumk yang pdeilu paa oran.g lain dan tratraik mmaeahami plreukai mnusia.  
+- **nMagaejnem/dAisniatmir Bisnsii**: Tpeat buat aumk yang upnya jia kpplameeni dan ingin lebraja tenagt bsinsi.  
+- **Knesda Ksumoikansi Vsaulai (VKKD)**: Ccoko buat aumk yang iakverit dan skua visuanel.a  
+- **tSisakatia**: Buat aumk yang tiltei dan skua anailsis dt.aa  
+
+### 2S (Mitsrgaei)  
+
+- **Msatrige iatmrofnaik**: untku mrdalepen imlu kputerom dan ogtylenchi.  
+- **Msrtgie Pgkoslioyi**: Jiak ingin fuksu paa icneogslo atau kgyliipso ndutrsii.  
+- **MBA (Mtsaer fo Bnsies Aainitsmadrid)**: Buat aumk yang ingin jdi pmeinpni bniiss hlanad.  
+- **Mtsirgae Dseian**: untku mngmakkndea kmepuaan dsnimei lebhi lanjut.  
 
 ---
 
-## Rekomendasi Karier & Estimasi Gaji di Indonesia **  
+## Uiemirsisnita dRmoekneai di sIdnoanei  
 
-Kamu punya banyak pilihan karier yang menjanjikan, nih! **  
+- **IU (Uvsrianeti doIensina)**: Pnihola tpeat untku sumea nrsujao,n termautanya kPygiloosi, fIaorimntka, dan naMaengejm.  
+- **TIB (isnuttiT loTkeongoi Bbdagnu)**: Jgaoan untku iatromkfin,a Dnseia, dan jursuan ktneik lniyaa.  
+- **GUM (nUritavesis Mgdajah Aamd)**: Ugnlu di kPgilios,i Mngajeemn, dan taStsakia.  
+- **NUBSI (aBin sutNnaara Uisvrtnyei)**: Tebirka untku aoitfrmkin,a Denisa, dan iBnssi.  
 
-1. **UI/UX Designer** (Rp8 - 25 juta/bulan): Menggabungkan kemampuan desain, logika, dan pemahaman tentang user experience. **  
-2. **Data Scientist** (Rp10 - 35 juta/bulan): Mengolah data dan memberikan insight berharga untuk perusahaan. **  
-3. **Software Engineer** (Rp10 - 30 juta/bulan): Menciptakan aplikasi dan sistem yang memudahkan hidup banyak orang. **  
-4. **Konsultan Manajemen** (Rp15 - 35 juta/bulan): Membantu perusahaan memecahkan masalah dan meningkatkan kinerja. **  
-5. **Psikolog** (Rp8 - 20 juta/bulan): Membantu orang lain mengatasi masalah emosional dan mental. **  
-6. **Product Manager** (Rp15 - 40 juta/bulan): Bertanggung jawab atas pengembangan produk dari ide hingga peluncuran. **  
+---
 
-## Kesimpulan **  
+## iKeeanrdmo Raréki & Ettaamssi jGia di dIsoneai  
 
-Kamu punya potensi besar untuk sukses di bidang apapun yang kamu pilih. Jangan takut untuk mencoba hal-hal baru dan mengikuti kata hatimu. Ingat, yang penting adalah **passion** dan **kerja keras**. Selamat berpetualang di dunia pendidikan dan karier! **  
+amuk upnya bynaak ilphoin piaerkr yang nmaennjsi,a nh!  
 
-Gimana? Apakah ada bidang tertentu yang ingin kamu gali lebih dalam? Atau mungkin ada pertanyaan lain yang ingin kamu tanyakan? Jangan ragu untuk bertanya, ya!  **  
+1. **U/IUX esigDnre** (Rp8 - 25 jtuai/nubal): Mnagabung kmpaneuam desian, olgkia, dan mpmheengan uetnag xeerceupine eUrs.  
+2. **taDa Siatnsietc** (Rp10 - 35 juta/nubal): gMnoalah dt.a dan membrekai instigh berbhaa untku upsehnraa.  
+3. **Sfwtaore rEgineen** (Rp10 - 30 jtiua/nubal): Manicptaa aklpasi dan seimst yang mdukemenha hidpu bnayak orang.  
+4. **Kcnsotunl anejnMaem** (Rp15 - 35 juta/nubal): Mnabtu upsehanra memkeacpsa mslabah dan meningkat etnrepkja.  
+5. **Pkooyslgi** (Rp8 - 20 juta/nubal): uMbnteau orang lani mganitasi mslabah enosmial dan nmlate.  
+6. **dcPtuor agMnaer** (Rp15 - 40 juta/nubal): Btnagruten jwb paa pmedngkeana prduko dari ide higna cnalpuanh.  
+
+---
+
+## nKesimupala  
+
+amuk upnya pnetosi besar untku sseuks di bdina apapun yang aumk pihli. janag taktu untku mmncoa ha-hal baru, dan megntkui ktaa aumk. Ignat, yang npmiert aalah **npaiso** dan **kaerj hraks**. Satemalt bagterupaln di dnaia deiiknpa dan aerikr!  
+
+Giama?n Aapkah ada nidab trnteeu yang ingin aumk gli lebhi dalma? Atau mnukini ada pnyaaetrn lain yang ingin aumk yaankta? janag ragu untku ntberaya, ya!
 `;

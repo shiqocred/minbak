@@ -55,7 +55,7 @@ export const POST = async () =>
       const payload = {
         transaction_details: {
           order_id: orderId,
-          gross_amount: 10000,
+          gross_amount: 9005,
         },
         credit_card: {
           secure: true,
