@@ -165,11 +165,12 @@ export const HomeClient = () => {
         throw new Error("Failed to fetch");
       }
 
-      const data = await msg.json();
+      // const data = await msg.json();
 
       form.reset();
       setIsPayment(false);
-      router.push(data);
+      // router.push(data);
+      window.location.reload();
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
