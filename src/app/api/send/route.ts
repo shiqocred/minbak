@@ -22,14 +22,16 @@ export const POST = async (req: Request) => {
     return new Response("Data not found.", { status: 404 });
   }
 
-  await databases.updateDocument(
-    DATABASE_ID,
-    CORE_ID,
-    userDoc.documents[0].paymentId,
-    {
-      isPaid: "FALSE",
-    }
-  );
+  if (userDoc.documents[0].paymentId) {
+    await databases.updateDocument(
+      DATABASE_ID,
+      CORE_ID,
+      userDoc.documents[0].paymentId,
+      {
+        isPaid: "FALSE",
+      }
+    );
+  }
 
   await databases.updateDocument(
     DATABASE_ID,
