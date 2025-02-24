@@ -83,7 +83,6 @@ export const GET = async () => {
 
     await databases.createDocument(DATABASE_ID, CORE_ID, ID.unique(), {
       sessionId: token,
-      isPaid: null,
       source: null,
       response: null,
       paymentId: null,
