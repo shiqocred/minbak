@@ -34,7 +34,7 @@ import ReactMarkdown from "react-markdown";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import confetti from "canvas-confetti";
 import { deleteCookie, getCookie } from "cookies-next/client";
@@ -68,6 +68,7 @@ export const HomeClient = () => {
   const router = useRouter();
   const notif = getCookie("notif");
   const isMobile = useIsMobile();
+  const searchParams = useSearchParams();
 
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -165,12 +166,11 @@ export const HomeClient = () => {
         throw new Error("Failed to fetch");
       }
 
-      // const data = await msg.json();
+      const data = await msg.json();
 
       form.reset();
       setIsPayment(false);
-      // router.push(data);
-      window.location.reload();
+      router.push(data);
     } catch (error) {
       console.log("error", error);
       toast.error("Failed to fetch");
@@ -247,11 +247,17 @@ export const HomeClient = () => {
     setIsMounted(true);
     getCurrent();
 
-    const currentUrl = window.location.href;
-    const fixedUrl = currentUrl.replace(/\?page=result\?$/, "?page=result");
+    const params = new URLSearchParams(searchParams);
 
-    if (currentUrl !== fixedUrl) {
-      router.replace(fixedUrl); // Redirect tanpa history baru
+    // Hapus parameter yang tidak diperlukan
+    params.delete("order_id");
+    params.delete("status_code");
+    params.delete("transaction_status");
+
+    // Periksa apakah URL perlu diperbarui
+    const newUrl = `?${params.toString()}`;
+    if (window.location.search !== newUrl) {
+      router.replace(newUrl, { scroll: false });
     }
   }, []);
 

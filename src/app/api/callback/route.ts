@@ -1,16 +1,46 @@
-import { DATABASE_ID, PAYMENT_ID } from "@/config";
+import { DATABASE_ID, MIDTRANS_KEY, PAYMENT_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { NextRequest, NextResponse } from "next/server";
 import { Query } from "node-appwrite";
+import { createHash } from "crypto";
 
 export const POST = async (req: NextRequest) => {
   try {
     // Parsing body URL-encoded
     const body = await req.json();
 
-    if (body.event !== "payment.received") {
-      return new NextResponse("Event invalid", {
-        status: 400,
+    console.log(body);
+
+    const {
+      transaction_status,
+      order_id,
+      signature_key,
+      gross_amount,
+      status_code,
+      fraud_status,
+    } = body;
+
+    let orderStatus;
+
+    if (transaction_status === "capture" && fraud_status === "accept") {
+      orderStatus = "SUCCESS";
+    } else if (transaction_status === "settlement") {
+      orderStatus = "SUCCESS";
+    } else if (transaction_status === "pending") {
+      orderStatus = "WAIT";
+    } else {
+      orderStatus = "FALSE";
+    }
+
+    const signature = order_id + status_code + gross_amount + MIDTRANS_KEY;
+    const hashedSignature = createHash("sha512")
+      .update(signature)
+      .digest("hex");
+    const isValid = hashedSignature === signature_key;
+
+    if (!isValid) {
+      return new NextResponse("Data not valid", {
+        status: 401,
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST",
@@ -19,12 +49,10 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    const { status, productId } = body.data;
-
     // Appwrite Query
     const { databases } = await createSessionClient();
     const existingDoc = await databases.listDocuments(DATABASE_ID, PAYMENT_ID, [
-      Query.equal("reference", productId),
+      Query.equal("reference", order_id),
     ]);
 
     if (existingDoc.total === 0) {
@@ -43,7 +71,12 @@ export const POST = async (req: NextRequest) => {
       PAYMENT_ID,
       existingDoc.documents[0].$id,
       {
-        isPaid: status === "SUCCESS" ? "SUCCESS" : "FALSE",
+        isPaid:
+          orderStatus === "SUCCESS"
+            ? "SUCCESS"
+            : orderStatus === "WAIT"
+            ? "WAIT"
+            : "FALSE",
       }
     );
 

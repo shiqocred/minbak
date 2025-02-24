@@ -1,21 +1,21 @@
 import {
-  // API_KEY,
-  // baseUrl,
+  baseUrl,
   CORE_ID,
   DATABASE_ID,
+  MIDTRANS_KEY,
+  MIDTRANS_URL,
   PAYMENT_ID,
-  // PAYMENT_URL,
 } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
 import { ID, Query } from "node-appwrite";
+import { generateToken } from "@/lib/utils";
 
 export const POST = async () =>
   // req: Request
   {
     try {
       const { databases } = await createSessionClient();
-      // const { name, email, number } = await req.json();
 
       const cookie = await cookies();
       const sessionId = cookie.get("MBTI_SESSION")?.value;
@@ -32,34 +32,60 @@ export const POST = async () =>
         return new Response("Data not found.", { status: 404 });
       }
 
-      // const expiredPayment = new Date();
-      // expiredPayment.setMinutes(new Date().getMinutes() + 10);
+      const midtransAuth = Buffer.from(MIDTRANS_KEY).toString("base64");
 
-      // const payload = {
-      //   name: name,
-      //   email: email,
-      //   mobile: number,
-      //   amount: 9000,
-      //   redirectUrl: `${baseUrl}/?page=result`,
-      //   description: "Pembayaran MBTI",
-      //   expiredAt: expiredPayment,
-      // };
+      let orderId;
+      let isUnique = false;
 
-      // const response = await fetch(PAYMENT_URL, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${API_KEY}`,
-      //   },
-      //   body: JSON.stringify(payload),
-      // });
+      while (!isUnique) {
+        orderId = generateToken(30);
 
-      // if (!response.ok) {
-      //   console.log(await response.json());
-      //   return new Response("Gateway Error", { status: 400 });
-      // }
+        // Cek apakah token sudah ada di database
+        const existingSessions = await databases.listDocuments(
+          DATABASE_ID,
+          PAYMENT_ID,
+          [Query.equal("reference", orderId)]
+        );
 
-      // const { data } = await response.json();
+        if (existingSessions.documents.length === 0) {
+          isUnique = true;
+        }
+      }
+
+      const payload = {
+        transaction_details: {
+          order_id: orderId,
+          gross_amount: 10000,
+        },
+        credit_card: {
+          secure: true,
+        },
+        gopay: {
+          enable_callback: true,
+          callback_url: `${baseUrl}/?page=result`,
+        },
+        callbacks: {
+          finish: `${baseUrl}/?page=result`,
+        },
+      };
+
+      const response = await fetch(MIDTRANS_URL, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Basic ${midtransAuth}`,
+          "X-Override-Notification": `${baseUrl}/api/callback`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        console.log(await response.json());
+        return new Response("Gateway Error", { status: 400 });
+      }
+
+      const data = await response.json();
 
       const payment = await databases.createDocument(
         DATABASE_ID,
@@ -67,8 +93,8 @@ export const POST = async () =>
         ID.unique(),
         {
           coreId: existingDoc.documents[0].$id,
-          reference: "",
-          isPaid: "SUCCESS",
+          reference: orderId,
+          isPaid: "WAIT",
         }
       );
 
@@ -81,7 +107,7 @@ export const POST = async () =>
         }
       );
 
-      return Response.json({ success: true });
+      return Response.json(data.redirect_url);
     } catch (error) {
       console.log(error);
       return new Response("Internal Error", { status: 500 });
