@@ -25,6 +25,15 @@ export const POST = async (req: Request) => {
   await databases.updateDocument(
     DATABASE_ID,
     CORE_ID,
+    userDoc.documents[0].paymentId,
+    {
+      isPaid: "FALSE",
+    }
+  );
+
+  await databases.updateDocument(
+    DATABASE_ID,
+    CORE_ID,
     userDoc.documents[0].$id,
     {
       source: JSON.stringify(soal),

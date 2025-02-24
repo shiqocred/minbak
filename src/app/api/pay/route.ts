@@ -87,6 +87,17 @@ export const POST = async () =>
 
       const data = await response.json();
 
+      if (existingDoc.documents[0].paymentId) {
+        await databases.updateDocument(
+          DATABASE_ID,
+          PAYMENT_ID,
+          existingDoc.documents[0].paymentId,
+          {
+            isPaid: "FALSE",
+          }
+        );
+      }
+
       const payment = await databases.createDocument(
         DATABASE_ID,
         PAYMENT_ID,
