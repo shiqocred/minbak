@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion, MotionProps } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TypingAnimationProps extends MotionProps {
   words: string[]; // List kata yang akan di-typing

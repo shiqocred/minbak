@@ -15,7 +15,6 @@ import {
 } from "@/lib/utils";
 import {
   ArrowRight,
-  Brain,
   Briefcase,
   ChevronLeft,
   ChevronRight,
@@ -24,10 +23,8 @@ import {
   Loader,
   Loader2,
   LockOpenIcon,
-  Rocket,
   Search,
   Sparkles,
-  UserCheck2,
   XCircle,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";

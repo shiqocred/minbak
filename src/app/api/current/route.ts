@@ -1,7 +1,6 @@
 import { CORE_ID, DATABASE_ID, PAYMENT_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
 import { generateToken } from "@/lib/utils";
-import Anthropic from "@anthropic-ai/sdk";
 import { cookies } from "next/headers";
 import { ID, Query } from "node-appwrite";
 import { GoogleGenerativeAI } from "@google/generative-ai";
