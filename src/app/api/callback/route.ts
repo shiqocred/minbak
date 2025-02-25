@@ -9,8 +9,6 @@ export const POST = async (req: NextRequest) => {
     // Parsing body URL-encoded
     const body = await req.json();
 
-    console.log(body);
-
     const {
       transaction_status,
       order_id,

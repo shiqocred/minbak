@@ -241,6 +241,7 @@ export const HomeClient = () => {
     params.delete("order_id");
     params.delete("status_code");
     params.delete("transaction_status");
+    params.delete("action");
 
     // Periksa apakah URL perlu diperbarui
     const newUrl = `?${params.toString()}`;
