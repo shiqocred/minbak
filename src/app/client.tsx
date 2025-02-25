@@ -294,9 +294,9 @@ export const HomeClient = () => {
               <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
               <span className={cn(`inline animate-gradient dark:text-white`)}>
                 {current.source && current.isPaid !== "SUCCESS"
-                  ? "Cukup Rp. 9000 untuk mengenali dirimu"
+                  ? "Cukup Rp. 9000 untuk mengetahui hasilnya"
                   : !current.source
-                  ? "Who are you guys?"
+                  ? "what can you do guys?"
                   : "Lihat Jawaban Anda"}
               </span>
               {!!current.source && (
