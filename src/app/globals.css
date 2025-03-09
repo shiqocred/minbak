@@ -171,13 +171,27 @@ body,
       transform: translate(-50%, -50%) scale(0.9);
     }
   }
+  --animate-download: download 2s linear infinite;
+  @keyframes download {
+    0% {
+      transform: translateY(-46px);
+      scale: 0.8;
+    }
+    50% {
+      scale: 1.5;
+    }
+    100% {
+      transform: translateY(46px);
+      scale: 0.8;
+    }
+  }
   --animate-gradient: gradient 8s linear infinite;
   /*
   ---break---
 */
   @keyframes gradient {
     to {
-      backgroundPosition: var(--bg-size) 0;
+      backgroundposition: var(--bg-size) 0;
     }
   }
 }

@@ -14,10 +14,12 @@ import {
   transformData,
 } from "@/lib/utils";
 import {
+  ArrowDown,
   ArrowRight,
   Briefcase,
   ChevronLeft,
   ChevronRight,
+  DownloadCloud,
   GraduationCap,
   Loader,
   Loader2,
@@ -63,6 +65,7 @@ export const HomeClient = () => {
   const [confirm, setConfirm] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [isSend, setIsSend] = useState(false);
   const [isPaymentProcess, setIsPaymentProcess] = useState(false);
 
@@ -173,6 +176,35 @@ export const HomeClient = () => {
         i === index ? { ...item, score: jawabanBaru } : item
       )
     );
+  };
+
+  const exportToPDF = async () => {
+    setIsExporting(true);
+    try {
+      const response = await fetch("/api/export", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error((await response.json()).error);
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "document.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (error) {
+      toast.error("Something went wrong", {
+        description: (error as Error).message,
+      });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   useEffect(() => {
@@ -544,7 +576,7 @@ export const HomeClient = () => {
           >
             <div className="py-2 md:py-5 lg:py-0 h-full w-full relative">
               <ScrollArea className="h-full w-full max-w-7xl p-4 md:p-6 lg:p-8 rounded-md overflow-hidden prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify prose-hr:border-gray-300 dark:prose-hr:border-gray-700 dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
-                <ReactMarkdown className={"w-full max-w-3xl mx-auto"}>
+                <ReactMarkdown className={"w-full max-w-3xl mx-auto pb-10"}>
                   {current.isPaid !== "SUCCESS" || !current.data
                     ? responseExample
                     : current.data}
@@ -612,6 +644,27 @@ export const HomeClient = () => {
                       </div>
                     )}
                   </div>
+                </div>
+              )}
+              <div className="absolute bottom-6 lg:bottom-8 bg-gradient-to-b from-transparent to-white dark:to-gray-900 w-full flex justify-center">
+                <Button
+                  onClick={exportToPDF}
+                  className="rounded-full cursor-pointer px-1.5 gap-0"
+                >
+                  <div className="size-7 bg-white text-black dark:bg-black dark:text-white flex items-center justify-center rounded-full">
+                    <DownloadCloud />
+                  </div>
+                  <span className="mx-2 lg:mx-3">Download</span>
+                </Button>
+              </div>
+              {isExporting && (
+                <div className="absolute w-full h-full top-0 left-0 flex flex-col gap-3 items-center justify-center bg-white/15 dark:bg-gray-900/15 backdrop-blur-sm">
+                  <div className="size-16 rounded-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 flex items-center justify-center overflow-hidden">
+                    <ArrowDown className="animate-download size-6" />
+                  </div>
+                  <span className="animate-pulse text-lg font-semibold ml-3">
+                    Downloading...
+                  </span>
                 </div>
               )}
             </div>

@@ -18,8 +18,6 @@ export const POST = async (req: Request) => {
     Query.equal("sessionId", sessionId.value),
   ]);
 
-  console.log(userDoc.documents[0]);
-
   if (userDoc.total === 0) {
     return new Response("Data not found.", { status: 404 });
   }
