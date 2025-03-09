@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
 import { CORE_ID, DATABASE_ID } from "@/config";
