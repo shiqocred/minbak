@@ -646,17 +646,19 @@ export const HomeClient = () => {
                   </div>
                 </div>
               )}
-              <div className="absolute bottom-6 lg:bottom-8 bg-gradient-to-b from-transparent to-white dark:to-gray-900 w-full flex justify-center">
-                <Button
-                  onClick={exportToPDF}
-                  className="rounded-full cursor-pointer px-1.5 gap-0"
-                >
-                  <div className="size-7 bg-white text-black dark:bg-black dark:text-white flex items-center justify-center rounded-full">
-                    <DownloadCloud />
-                  </div>
-                  <span className="mx-2 lg:mx-3">Download</span>
-                </Button>
-              </div>
+              {current.isPaid === "SUCCESS" && current.data && (
+                <div className="absolute bottom-6 lg:bottom-8 bg-gradient-to-b from-transparent to-white dark:to-gray-900 w-full flex justify-center">
+                  <Button
+                    onClick={exportToPDF}
+                    className="rounded-full cursor-pointer px-1.5 gap-0"
+                  >
+                    <div className="size-7 bg-white text-black dark:bg-black dark:text-white flex items-center justify-center rounded-full">
+                      <DownloadCloud />
+                    </div>
+                    <span className="mx-2 lg:mx-3">Download</span>
+                  </Button>
+                </div>
+              )}
               {isExporting && (
                 <div className="absolute w-full h-full top-0 left-0 flex flex-col gap-3 items-center justify-center bg-white/15 dark:bg-gray-900/15 backdrop-blur-sm">
                   <div className="size-16 rounded-full bg-gray-900 text-white dark:bg-white dark:text-gray-900 flex items-center justify-center overflow-hidden">
