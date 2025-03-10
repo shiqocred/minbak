@@ -194,7 +194,7 @@ export const HomeClient = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "document.pdf";
+      a.download = "tes_minbak_ai_wrapper.pdf";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -647,7 +647,7 @@ export const HomeClient = () => {
                 </div>
               )}
               {current.isPaid === "SUCCESS" && current.data && (
-                <div className="absolute bottom-6 lg:bottom-8 bg-gradient-to-b from-transparent to-white dark:to-gray-900 w-full flex justify-center">
+                <div className="absolute bottom-6 lg:bottom-8 bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-900 w-full flex justify-center">
                   <Button
                     onClick={exportToPDF}
                     className="rounded-full cursor-pointer px-1.5 gap-0"

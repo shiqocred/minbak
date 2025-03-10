@@ -25,7 +25,7 @@ export async function POST() {
       return new Response("Data not found.", { status: 404 });
     }
 
-    const markdown = existingDoc.documents[0].response;
+    const markdown = existingDoc.documents[0].response as string;
 
     const htmlContent = `
       <html>
@@ -86,7 +86,7 @@ export async function POST() {
             }
           </style>
         </head>
-        <body class="prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify prose-hr:border-gray-300 dark:prose-hr:border-gray-700 dark:text-gray-200 prose-strong:dark:text-white prose-headings:dark:text-white">
+        <body class="prose prose-sm lg:prose-base prose-p:my-3 prose-ul:my-3 prose-h2:mt-10 prose-h2:mb-2 leading-relaxed prose-p:text-justify prose-li:text-justify prose-hr:border-gray-300">
           ${marked(markdown)}
         </body>
       </html>
@@ -127,7 +127,7 @@ export async function POST() {
     return new NextResponse(pdfBuffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": 'inline; filename="document.pdf"',
+        "Content-Disposition": 'inline; filename="minbak.pdf"',
       },
     });
   } catch (error) {

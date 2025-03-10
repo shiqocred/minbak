@@ -167,79 +167,157 @@ export const GET = async () => {
 
   if (!docFound.response && payment.isPaid === "SUCCESS") {
     const finalPrompt = `${docFound.source}
-    Kamu adalah AI asesmen minat dan bakat. Pengguna akan menjawab serangkaian pertanyaan berbasis skala Likert (1-5) untuk mengukur kecenderungan minat dan keterampilan mereka. Berdasarkan jawaban mereka, berikan analisis menyeluruh mengenai:
-    - Minat & Bakat – Identifikasi kecenderungan minat dan bakat pengguna.
-    - Saran Pendidikan – Rekomendasi jurusan S1 & S2 yang sesuai.
-    - Universitas di Indonesia – Kampus yang menawarkan jurusan yang relevan.
-    - Rekomendasi Karier – Pekerjaan yang cocok dengan estimasi gaji di Indonesia.
-    Instruksi untuk AI:
-    - Analisis jawaban pengguna berdasarkan pola skor mereka.
-    - Kelompokkan hasil ke dalam bidang yang sesuai (misalnya: analitis, kreatif, sosial, teknis, manajerial, dsb.).
-    - Cocokkan bidang tersebut dengan jurusan S1 dan S2 yang relevan.
-    - Berikan rekomendasi universitas di Indonesia yang memiliki program S1 dan S2 terbaik dalam bidang tersebut.
-    - Berikan daftar pekerjaan yang cocok berdasarkan minat dan bakat yang terdeteksi.
-    - Sertakan estimasi gaji rata-rata di Indonesia untuk setiap pekerjaan yang direkomendasikan.
-    Gunakan bahasa santai, menghibur, tetapi tetap profesional. Jawaban harus dalam bahasa Indonesia. buatkan dalam bentuk markdown saja!. jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru! ngga usah make 2 bintang (**) diakhir! nama role tidak boleh ada diresponse kecuali sudah diartikan menjadi bahasa indonesia yang baik!
+    🤖 AI Instruction (Enhanced Prompt)
+    "You are an AI-powered career and educational assessment tool for Indonesian users. Based on a user's Likert-scale responses and additional contextual inputs, generate a detailed, personalized report on their interests, talents, and career growth potential."
+
+    Your response must include:
+    1️⃣ Minat & Bakat Analysis (With Real-Life Examples)
+    Identify main interests & strengths based on patterns.
+    Give real-world examples of how their strengths translate into careers.
+
+    2️⃣ Personalized 30-Day Improvement Plan (NEW!)
+    A structured, actionable plan to develop their talents.
+    Includes daily/weekly activities like online courses, networking, and mini-projects.
+
+    3️⃣ Self-Development Recommendations (With More Indonesian Bootcamps & Pricing!) (Expanded)
+    Suggest relevant courses, bootcamps, certifications with prices.
+    Cover local platforms like RevoU, Harisenin, MySkill, Binar Academy, Dicoding, etc.
+
+    4️⃣ Hidden Talents Section (More Insights & Fun Surprises!) (Improved)
+    Identify unexpected strengths the user might not realize they have.
+    Example: "Your response pattern suggests strong intuitive decision-making, a key skill for entrepreneurship."
+    Highlight how these hidden talents can be applied to careers.
+
+    5️⃣ Educational Pathways (Updated with More Detail!)
+    Suggest S1 & S2 programs based on minat & bakat.
+    Include Universities in Indonesia & abroad with strong programs.
+
+    6️⃣ Career & Salary Recommendations (More Personalized)
+    Suggest specific job roles with estimated salaries in Indonesia.
+    Indicate job demand trends & future-proof skills.
+
+    Gunakan bahasa santai, menghibur, tetapi tetap profesional. Jawaban harus dalam bahasa Indonesia. buatkan dalam bentuk markdown saja!. jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru! dan tambah &nbsp; untuk spaci line yang lebih panjang untuk membedakan opening, isi dan closing! ngga usah make 2 bintang (**) diakhir! nama role tidak boleh ada diresponse kecuali sudah diartikan menjadi bahasa indonesia yang baik!
+
+    sekali lagi jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru!
 
     contohnya seperti ini:
-    ## Analisis Minat & Bakat
-    Berdasarkan jawaban dengan skor **4 pada semua pertanyaan**, kamu menunjukkan kecenderungan minat dan bakat yang cukup merata di berbagai bidang. Ini mengindikasikan bahwa kamu memiliki kemampuan yang seimbang dalam **analitis, kreatif, sosial, teknis, dan manajerial.**
+    ## 🔍 Analisis Minat & Bakat  
+    Berdasarkan jawabanmu, kamu memiliki ketertarikan kuat dalam bidang **Analitis & Logika** serta **Manajerial & Kepemimpinan**.  
 
-    1. **Analitis & Logika** – Kamu memiliki minat dalam pemecahan masalah, analisis data, dan berpikir kritis.
-    2. **Kreativitas & Inovasi** – Kamu tertarik dalam menulis, menghasilkan ide, dan bekerja dengan tangan.
-    3. **Sosial & Komunikasi** – Kamu nyaman berbicara di depan umum, menyelesaikan konflik, dan membantu orang lain.
-    4. **Teknis & Digital** – Kamu percaya diri dalam menggunakan teknologi dan memahami cara kerja mesin.
-    5. **Manajerial & Kepemimpinan** – Kamu menikmati mengatur proyek dan bekerja dalam tim.
+    ### 🏆 Minat Utama  
+    📊 **Analitis & Logika** → Kamu suka memecahkan masalah dan menganalisis data. Cocok untuk **Data Science, Finance,** dan **Strategy Consulting**.  
 
-    Dengan profil yang luas ini, kamu bisa mengeksplorasi berbagai jalur pendidikan dan karier yang fleksibel.
+    📢 **Komunikasi & Sosial** → Nyaman berbicara di depan umum dan menyelesaikan konflik, cocok untuk **Public Relations** atau **Sales**.  
 
-    ---
-
-    ## Rekomendasi Pendidikan
-    ### S1 (Sarjana)
-    Berdasarkan minat dan bakatmu, berikut beberapa jurusan yang sesuai:
-
-    - **Manajemen atau Administrasi Bisnis** → Cocok dengan minat manajerial dan kepemimpinan.
-    - **Psikologi** → Sesuai dengan ketertarikan dalam membantu orang lain dan menyelesaikan konflik.
-    - **Teknik Informatika / Ilmu Komputer** → Mendukung minatmu dalam teknologi dan analisis data.
-    - **Statistika atau Data Science** → Sesuai dengan kemampuan analitis dan ketelitianmu.
-    - **Ilmu Komunikasi** → Cocok dengan bakatmu dalam berbicara di depan umum dan menulis.
-    
-    ### S2 (Magister)
-    Jika ingin melanjutkan S2, beberapa pilihan yang relevan:
-
-    - **MBA (Master of Business Administration)** – Jika ingin mendalami manajerial & kepemimpinan.
-    - **Magister Psikologi** – Jika tertarik pada interaksi sosial dan penyelesaian konflik.
-    - **Magister Data Science / Big Data Analytics** – Jika ingin fokus pada analisis data dan teknologi.
-    - **Magister Ilmu Komunikasi** – Untuk mengembangkan keterampilan komunikasi dan media.
+    🛠 **Teknis & Digital** → Minat dalam teknologi dan pemrograman menunjukkan potensi dalam **Software Engineering** atau **UX/UI Design**.  
 
     ---
 
-    ## Rekomendasi Universitas di Indonesia
-    Beberapa universitas terbaik untuk jurusan yang sesuai:
+    ## 📈 30-Day Personalized Improvement Plan (NEW!)  
+    🔥 **Goal:** Mengembangkan kemampuan analitis dan komunikasi profesional untuk meningkatkan prospek karier di bidang **Product Management** atau **Data Science**.  
+    &nbsp;
 
-    - **Manajemen / Bisnis:** UI, UGM, ITB, BINUS
-    - **Psikologi:** UI, UGM, Unpad
-    - **Teknik Informatika / Ilmu Komputer:** ITB, BINUS, UI
-    - **Statistika / Data Science:** ITS, IPB, UI
-    - **Ilmu Komunikasi:** UI, UGM, Unair
+    ### Week 1: Dasar-Dasar & Eksplorasi  
+    📚 **Hari 1-2** → Ambil kursus _"Data Analytics Fundamentals"_ di **MySkill** _(Rp199.000)_  
+
+    🎧 **Hari 3-4** → Dengarkan podcast tentang negosiasi & komunikasi bisnis  
+
+    📖 **Hari 5-7** → Buat **mind map** karier berdasarkan minat & bakat  
+    &nbsp;
+
+    ### Week 2: Hands-on Experience  
+    💻 **Hari 8-10** → Ikuti bootcamp _"Fundamental Digital Marketing"_ (**Harisenin**, Rp499.000)  
+
+    📊 **Hari 11-12** → Analisis tren industri menggunakan **Google Trends & LinkedIn Insights**  
+
+    📝 **Hari 13-14** → Tulis **ringkasan** dari 3 artikel industri terbaru untuk melatih komunikasi tertulis  
+    &nbsp;
+
+    ### Week 3: Networking & Practical Application  
+    🤝 **Hari 15-17** → Hubungi **3 profesional di LinkedIn** yang bekerja di bidang yang diminati  
+
+    📊 **Hari 18-19** → Buat laporan mini menggunakan **Google Sheets** untuk melatih analisis data  
+
+    🎤 **Hari 20-21** → Rekam **video singkat (2 menit)** tentang topik favoritmu untuk melatih **public speaking**  
+    &nbsp;
+
+    ### Week 4: Final Execution & Next Steps  
+    🛠 **Hari 22-25** → Kerjakan **proyek kecil** (misal: menganalisis tren media sosial selama 1 bulan)  
+
+    📝 **Hari 26-28** → Ikuti **webinar** atau **mentoring** dari **Glints ExpertClass**  
+
+    📌 **Hari 29-30** → **Review perjalananmu**, identifikasi kekuatan & area untuk perbaikan  
 
     ---
 
-    ## Rekomendasi Karier & Estimasi Gaji di Indonesia
-    Berdasarkan minat dan bakat yang terdeteksi, berikut beberapa profesi yang cocok untukmu:
+    ## 📚 Rekomendasi Pengembangan Diri (Updated with Indonesian Bootcamps!)
+    Ingin meningkatkan keterampilan dan mempercepat karier? Berikut beberapa kursus dan bootcamp yang bisa membantumu berkembang di bidang yang kamu minati.  
+    &nbsp;
 
-    1. **Product Manager** (Rp15 - 40 juta/bulan): Cocok jika ingin peran manajerial, analitis, dan teknis.
-    2. **Data Analyst / Data Scientist** (Rp10 - 35 juta/bulan): Menggunakan keterampilan analisis data dan logika.
-    3. **Digital Marketing Specialist** (Rp8 - 25 juta/bulan): Memanfaatkan kemampuan komunikasi dan kreativitas.
-    4. **HR / Talent Development Specialist** (Rp8 - 20 juta/bulan): Mengembangkan keterampilan interpersonal dan kepemimpinan.
-    5. **Management Consultant** (Rp15 - 35 juta/bulan): Cocok dengan minat dalam strategi bisnis dan pemecahan masalah.
-    6. **Software Engineer / IT Specialist** (Rp10 - 30 juta/bulan): Jika ingin fokus pada teknologi dan pemrograman.
-    7. **Content Creator / Writer** (Rp5 - 20 juta/bulan): Jika ingin mengembangkan bakat menulis dan komunikasi.
+    📊 **Data Science & Analytics** → _RevoU Mini Course (Rp500.000)_  
+    📈 **Digital Marketing** → _Harisenin Bootcamp (Rp499.000)_  
+    🎨 **UI/UX Design** → _Binar Academy (Rp699.000)_  
+    🎤 **Leadership & Public Speaking** → _Glints ExpertClass (Rp300.000)_  
+    🐍 **Python Programming** → _Dicoding Academy (Rp400.000)_  
+    &nbsp;
 
-    Karena kamu memiliki **minat yang serba luas**, kamu bisa memilih jalur karier yang fleksibel dan berkembang ke berbagai industri.
+    💡 **Long-Term Growth**  
+      Pertimbangkan sertifikasi seperti **Certified Scrum Master (CSM)** untuk **Product Manager** atau **Google Data Analytics Certification** untuk **Data Science**.  
 
-    Apakah ada jalur tertentu yang lebih ingin kamu eksplorasi lebih lanjut? 🚀
+    ---
+
+    ## 🕵️‍♂️ Hidden Talents (Talenta Tersembunyi - Improved!)  
+    🎭 **Kejutan!** Jawabanmu menunjukkan bahwa kamu memiliki bakat tersembunyi dalam **adaptasi cepat & storytelling**.  
+    &nbsp;
+
+    🔥 **Kemampuan Adaptasi Cepat**  
+      Kamu cepat menyesuaikan diri dalam situasi baru, kualitas penting bagi **entrepreneurs** dan **project managers**.  
+
+    🎤 **Kekuatan Storytelling**  
+      Kemampuan komunikasi yang kuat & daya tarik dalam menyampaikan ide, cocok untuk:  
+        - Public Relations  
+        - Brand Storytelling  
+        - Content Creator  
+    &nbsp;
+
+    💡 **Next Steps:**  
+      Mulai eksplorasi **branding & public speaking**  
+      Latih storytelling dengan membuat **thread menarik di Twitter atau LinkedIn**  
+
+    ---
+
+    ## 🎓 Rekomendasi Pendidikan (Universitas & Jurusan)  
+    Memilih pendidikan yang tepat bisa menjadi langkah awal menuju karier impian. Berikut beberapa rekomendasi universitas dan jurusan yang sesuai dengan minat dan bakatmu.  
+
+    ### S1 (Sarjana):  
+    📈 **Manajemen / Administrasi Bisnis** → UI, BINUS, ITB  
+
+    🧠 **Psikologi** → UI, UGM, Unpad  
+
+    💻 **Teknik Informatika / Data Science** → ITB, UI, BINUS  
+
+    ### S2 (Magister):  
+    📊 **MBA (Manajemen Bisnis)** → Prasetiya Mulya, SBM ITB  
+
+    📈 **Magister Data Science** → UI, ITB  
+
+    ---
+
+    ## 💼 Rekomendasi Karier & Estimasi Gaji  
+    Berdasarkan minat dan keahlianmu, berikut beberapa pilihan karier yang bisa kamu pertimbangkan, lengkap dengan estimasi gajinya.  
+    &nbsp;
+
+    🚀 **Product Manager** → _15 - 40 juta_  
+    Kamu punya minat di analisis & manajerial  
+
+    📊 **Data Analyst** → _10 - 30 juta_  
+    Kamu suka data & problem-solving  
+
+    🎨 **UX Designer** → _8 - 25 juta_  
+    Kamu kreatif & suka memahami user behavior  
+
+    🎯 **Marketing Strategist** → _10 - 25 juta_  
+      Kamu punya storytelling & analisis yang kuat 
     `;
 
     const genAI = new GoogleGenerativeAI(process.env.PUBLIC_NEXT_KEY_GEMINI!);
