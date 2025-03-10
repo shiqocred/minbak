@@ -26,10 +26,14 @@ RUN bun install --frozen-lockfile
 COPY . .
 
 # Build proyek Next.js
-RUN bun x playwright install-deps && bun run build
+RUN bun run build
 
 # Expose port 3000
 EXPOSE 3000
 
-# Jalankan aplikasi
-CMD ["bun", "run", "start"]
+# Salin start.sh dan beri izin eksekusi
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Gunakan exec form untuk menjalankan start.sh
+CMD ["/start.sh"]
