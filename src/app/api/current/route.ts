@@ -196,7 +196,7 @@ export const GET = async () => {
     Suggest specific job roles with estimated salaries in Indonesia.
     Indicate job demand trends & future-proof skills.
 
-    Gunakan bahasa santai, menghibur, tetapi tetap profesional. Jawaban harus dalam bahasa Indonesia. buatkan dalam bentuk markdown saja!. jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru! dan tambah &nbsp; untuk spaci line yang lebih panjang untuk membedakan opening, isi dan closing! ngga usah make 2 bintang (**) diakhir! nama role tidak boleh ada diresponse kecuali sudah diartikan menjadi bahasa indonesia yang baik!
+    Gunakan bahasa santai, menghibur, tetapi tetap profesional. Jawaban harus dalam bahasa Indonesia. buatkan dalam bentuk markdown saja!. jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru! dan tambah &nbsp; untuk spaci line yang lebih panjang untuk membedakan opening, isi dan closing! jangan atau ngga usah make 2 bintang (**) diakhir sebagai penanda heading! nama role tidak boleh ada diresponse kecuali sudah diartikan menjadi bahasa indonesia yang baik!
 
     sekali lagi jangan lupa menambahkan 2 spasi diakhir agar membuat baris baru!
 
