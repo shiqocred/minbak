@@ -16,14 +16,17 @@ ENV PATH="$BUN_INSTALL/bin:$PATH"
 # Set working directory
 WORKDIR /app
 
-# Salin file proyek
-COPY . .
+# Salin file package.json dan bun.lockb dulu untuk caching
+COPY package.json bun.lockb ./
 
-# Install dependencies dengan Bun
+# Install dependencies menggunakan Bun
 RUN bun install --production
 
-# Build aplikasi jika perlu
+# Salin seluruh file proyek
+COPY . .
+
+# Build aplikasi Next.js
 RUN bun run build
 
-# Jalankan aplikasi
+# Jalankan aplikasi Next.js
 CMD ["bun", "run", "start"]
