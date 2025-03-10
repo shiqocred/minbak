@@ -6,7 +6,7 @@ ENV NODE_ENV=production
 
 # Install dependencies
 RUN apt-get update && apt-get install -y curl git unzip \
-    && curl -fsSL https://bun.sh/install | bash -s "bun-v1.1.20" \
+    && curl -fsSL https://bun.sh/install | bash \
     && apt-get clean
 
 # Tambahkan Bun ke PATH
