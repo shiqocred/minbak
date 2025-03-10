@@ -3,30 +3,33 @@ FROM ubuntu:24.04
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Install dependencies
 RUN apt-get update && apt-get install -y curl git unzip \
     && curl -fsSL https://bun.sh/install | bash \
-    && apt-get clean
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Tambahkan Bun ke PATH
-ENV BUN_INSTALL="/root/.bun"
-ENV PATH="$BUN_INSTALL/bin:$PATH"
+ENV PATH="/root/.bun/bin:$PATH"
 
-# Set working directory
+# Tentukan working directory
 WORKDIR /app
 
-# Salin file package.json dan bun.lockb dulu untuk caching
+# Copy file package.json dan bun.lockb terlebih dahulu
 COPY package.json bun.lockb ./
 
-# Install dependencies menggunakan Bun
-RUN bun install --production
+# Install dependencies dengan Bun
+RUN bun install --frozen-lockfile
 
-# Salin seluruh file proyek
+# Copy seluruh project ke dalam container
 COPY . .
 
-# Build aplikasi Next.js
+# Build proyek Next.js
 RUN bun run build
 
-# Jalankan aplikasi Next.js
+# Expose port 3000
+EXPOSE 3000
+
+# Jalankan aplikasi
 CMD ["bun", "run", "start"]
