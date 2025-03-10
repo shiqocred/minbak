@@ -35,8 +35,9 @@ export async function POST() {
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
           <style>
             body {
-              line-height: 1.625;
               font-family: "Inter", sans-serif;
+              font-size: 12px;
+              line-height: 20px;
               padding: 0;
               margin: 0;
             }
@@ -54,19 +55,21 @@ export async function POST() {
               font-weight: 700;
               color: #111827;
             }
-            .prose h1 {
-              font-size: 2.25rem;
-              margin-top: 2rem;
-              margin-bottom: 1rem;
-            }
             .prose h2 {
-              font-size: 1.5rem;
-              margin-top: 2.5rem;
-              margin-bottom: 0.5rem;
+              font-size: 18px;
+                margin-top: 28px;
+                margin-bottom: 14px;
+                line-height: 25px;
+            }
+            .prose h3 {
+              font-size: 16px;
+                margin-top: 25px;
+                margin-bottom: 7px;
+                line-height: 25px;
             }
             .prose p {
-              margin-top: 0.75rem;
-              margin-bottom: 0.75rem;
+            margin-top: 14px;
+            margin-bottom: 14px;
               text-align: justify;
             }
             .prose ul {
