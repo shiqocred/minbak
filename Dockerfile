@@ -26,7 +26,7 @@ RUN bun install --frozen-lockfile
 COPY . .
 
 # Build proyek Next.js
-RUN bun x playwright install && bun run build
+RUN bun x playwright install-deps && bun run build
 
 # Expose port 3000
 EXPOSE 3000
